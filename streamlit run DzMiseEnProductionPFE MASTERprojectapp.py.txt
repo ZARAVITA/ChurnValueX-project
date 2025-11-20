@@ -1,0 +1,1 @@
+streamlit run "D:\zMiseEnProductionPFE MASTER\project\app.py"
