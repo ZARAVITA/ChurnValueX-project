@@ -221,10 +221,13 @@ def to_excel_bytes(df: pd.DataFrame) -> bytes:
 st.set_page_config(page_title="Churn & CLV Dashboard", layout="wide")
 st.title("Système intelligent de pilotage de la rétention client")
 st.markdown(
-    "Ce système combine segmentation, modélisation du churn par un modèle de machine learning, "
-    "analyse de survie pour la dimension temporelle et l'estimation de valeur vie client (CLV) "
-    "par un modèle statistique pour aider les entreprises à augmenter "
-    "leur rétention et leur rentabilité. \n\n"
+    """
+    Ce système développé au sein de **Smart Automation Technologies** par **ZARA VITA** offre une plateforme intelligente de pilotage de la **rétention client**.  
+    Il réunit **segmentation automatique**, **prédiction du churn via XGBoost**, **analyse de survie (Weibull AFT)** pour anticiper les risques à 1–3 mois,  
+    et **estimation avancée de la CLV (BG/NBD + Gamma-Gamma)**. L’interface fournit des **KPI clés**, une **vision temps réel des clients prioritaires** et des **recommandations actionnables** pour maximiser la rétention, la valeur client et la rentabilité globale.
+
+    Le système prend en entrée des **données clients structurées et spécifiques** (profil, historique de commandes, interactions, paiements, etc.) et applique en interne ses **méthodes analytiques avancées** pour générer des résultats opérationnels. Une **démonstration intégrée** permet de lancer la démo et tester immédiatement le pipeline : les jeux de données fournis sont optimisés pour ce système, mais restent **entièrement personnalisables** aux données réelles de chaque entreprise.
+    """
 )
 
 # Sidebar: data source
