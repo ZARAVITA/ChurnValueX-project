@@ -232,7 +232,7 @@ st.sidebar.header("Source des données")
 data_choice = st.sidebar.radio("Choisir une option :", ("Lancer la démo avec le dataset intégré", "Importer un fichier CSV/Excel"))
 
 uploaded_df = None
-sample_path = "data\E Commerce Dataset.xlsx"
+sample_path = "data/E Commerce Dataset.xlsx"
 if data_choice == "Lancer la démo avec le dataset intégré":
     st.sidebar.markdown("Utilisez le dataset d'exemple stocké dans le système.")
     use_sample = st.sidebar.button("Charger le dataset d'exemple")
