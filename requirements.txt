@@ -2,7 +2,7 @@ streamlit==1.38.0
 pandas==2.2.2
 numpy==1.26.4
 plotly==5.22.0
-scikit-learn==1.5.1
+scikit-learn==1.5.2
 imbalanced-learn==0.12.2
 xgboost==1.7.6
 lifelines==0.27.8
