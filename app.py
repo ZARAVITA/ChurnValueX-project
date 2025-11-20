@@ -221,7 +221,9 @@ def to_excel_bytes(df: pd.DataFrame) -> bytes:
 st.set_page_config(page_title="Churn & CLV Dashboard", layout="wide")
 st.title("Système intelligent de pilotage de la rétention client")
 st.markdown(
-    "Ce système combine segmentation, modélisation du churn, analyse de survie et CLV pour aider les entreprises à augmenter "
+    "Ce système combine segmentation, modélisation du churn par un modèle de machine learning, "
+    "analyse de survie pour la dimension temporelle et l'estimation de valeur vie client (CLV) "
+    "par un modèle statistique pour aider les entreprises à augmenter "
     "leur rétention et leur rentabilité. \n\n"
 )
 
