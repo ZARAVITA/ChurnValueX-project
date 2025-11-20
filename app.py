@@ -219,14 +219,14 @@ def to_excel_bytes(df: pd.DataFrame) -> bytes:
 # ---------- UI ----------
 
 st.set_page_config(page_title="Churn & CLV Dashboard", layout="wide")
-st.title("Système intelligent de pilotage de la rétention client - Entreprise SMART AUTOMATION TECHNOLOGIES")
+st.title("Système intelligent de pilotage de la rétention client")
 st.markdown(
     """
     ### Système intelligent de pilotage de la rétention client
 
 Développé par **ZARA VITA** au sein de **Smart Automation Technologies**, ce système transforme vos données clients en stratégie de rétention optimisée.
 
-Il combine quatre modèles analytiques complémentaires : segmentation automatique par clustering, prédiction du churn via XGBoost, analyse de survie (Weibull AFT) pour anticiper les risques à 1–3 mois, et estimation de la valeur vie client (CLV) par modèles statistiques avancés. L'interface fournit des KPI clés, une vision temps réel des clients prioritaires et des recommandations actionnables, permettant aux équipes Marketing et CRM de concentrer leurs efforts sur les clients à fort impact. 
+Il combine quatre modèles analytiques complémentaires : segmentation automatique par clustering, prédiction du churn via un modèle de Machine Learning, analyse de survie (Weibull AFT) pour anticiper les risques de départ à 1–3 mois, et estimation de la valeur vie client (CLV) par modèles statistiques avancés. L'interface fournit des KPI clés, une vision temps réel des clients prioritaires et des recommandations actionnables, permettant aux équipes **Marketing et CRM** de concentrer leurs efforts sur **les clients à fort impact**. 
 Il prend en entrée des **données clients structurées et spécifiques** (profil, historique de commandes, interactions, paiements, etc.) et applique en interne ses **méthodes analytiques avancées** pour générer des résultats opérationnels. Une **démonstration intégrée** permet de lancer la démo et tester immédiatement le pipeline : les jeux de données fournis sont optimisés pour ce système, mais restent **entièrement personnalisables** aux données réelles de chaque entreprise.
 ---
 
