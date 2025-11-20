@@ -22,9 +22,9 @@ from datetime import datetime
 import warnings
 warnings.filterwarnings("ignore")
 
-# ---- IMPORTS DES FONCTIONS (réécriture adaptée depuis MiseEnProductionPFE.py) ----
-# J'ai repris et adapté les fonctions de nettoyage, segmentation, modélisation, AFT et CLV
-# depuis ton fichier MiseEnProductionPFE.py (intégrées ci-dessous).
+
+# Adaptation des fonctions de nettoyage, segmentation, modélisation, AFT et CLV
+# depuis fichier MiseEnProductionPFE.py (intégrées ci-dessous).
 # Référence : MiseEnProductionPFE.py. :contentReference[oaicite:1]{index=1}
 
 # ---------- Utilities (clean_data, segmentation, predict_churn, predict_churn_proba_x_mois, predict_clv) ----------
@@ -99,7 +99,7 @@ def predict_churn(df: pd.DataFrame, smote=True):
     if smote and y.nunique() > 1:
         sm = SMOTE(random_state=SEED)
         X_train, y_train = sm.fit_resample(X_train, y_train)
-    model = xgb.XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=SEED, n_estimators=100)
+    model = xgb.XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=SEED, n_estimators=70)  #=====================
     model.fit(X_train, y_train)
     # probabilities for all rows
     df['Churn_proba'] = model.predict_proba(df[features])[:,1]
@@ -229,12 +229,12 @@ st.markdown(
 
 # Sidebar: data source
 st.sidebar.header("Source des données")
-data_choice = st.sidebar.radio("Choisir une option :", ("Télécharger dataset exemple", "Importer un fichier CSV/Excel"))
+data_choice = st.sidebar.radio("Choisir une option :", ("Lancer la démo avec le dataset intégré", "Importer un fichier CSV/Excel"))
 
 uploaded_df = None
 sample_path = "D:\zMiseEnProductionPFE MASTER\project\data\E Commerce Dataset.xlsx"
 if data_choice == "Lancer la démo avec le dataset intégré":
-    st.sidebar.markdown("Utilisez le dataset d'exemple stocké dans `/data`. (Placez `E_Commerce_Dataset.xlsx` dans /data).")
+    st.sidebar.markdown("Utilisez le dataset d'exemple stocké dans le système.")
     use_sample = st.sidebar.button("Charger le dataset d'exemple")
     if use_sample:
         try:
