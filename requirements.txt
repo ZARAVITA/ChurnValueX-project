@@ -9,3 +9,4 @@ scipy==1.10.1
 lifelines==0.27.8
 lifetimes==0.11.3
 matplotlib==3.8.4
+openpyxl==3.1.2
