@@ -12,6 +12,7 @@ Created on Wed Nov 19 17:09:36 2025
 import os
 os.environ["STREAMLIT_USE_ARROW"] = "0"   # désactive PyArrow
 import streamlit as st
+st.set_page_config(page_title="Churn & CLV Dashboard", layout="wide")
 import pandas as pd
 import numpy as np
 from io import BytesIO
@@ -218,7 +219,7 @@ def to_excel_bytes(df: pd.DataFrame) -> bytes:
 
 # ---------- UI ----------
 
-st.set_page_config(page_title="Churn & CLV Dashboard", layout="wide")
+
 st.title("Système intelligent de pilotage de la rétention client")
 st.markdown(
     """
