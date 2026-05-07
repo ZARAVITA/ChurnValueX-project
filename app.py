@@ -69,29 +69,33 @@ if raw_df is None:
 """, unsafe_allow_html=True)
     st.stop()
 
-# ── Run pipeline ─────────────────────────────────────────────────────────────
-with st.spinner("⬡  ChurnIQ is thinking..."):
-    #----------------------------------Ajout nouvel--------------------------------
-    progress_text = "Initializing ChurnIQ AI Engine..."
-    my_bar = st.progress(0, text=progress_text)
+# ── Run pipeline (only when data changes, not on filter interactions) ─────────
+pipeline_key = f"pipeline_{id(raw_df)}_{len(raw_df)}"
 
-    for percent_complete in range(100):
-        time.sleep(0.03)
+if st.session_state.get("pipeline_key") != pipeline_key:
+    with st.spinner("⬡  ChurnIQ is thinking..."):
+        progress_text = "Initializing ChurnIQ AI Engine..."
+        my_bar = st.progress(0, text=progress_text)
 
-        if percent_complete < 30:
-            text = "Analyzing customer behavior..."
-        elif percent_complete < 60:
-            text = "Computing churn probabilities..."
-        elif percent_complete < 90:
-            text = "Generating AI insights..."
-        else:
-            text = "Finalizing intelligence dashboard..."
+        for percent_complete in range(100):
+            time.sleep(0.03)
+            if percent_complete < 30:
+                text = "Analyzing customer behavior..."
+            elif percent_complete < 60:
+                text = "Computing churn probabilities..."
+            elif percent_complete < 90:
+                text = "Generating AI insights..."
+            else:
+                text = "Finalizing intelligence dashboard..."
+            my_bar.progress(percent_complete + 1, text=text)
 
-        my_bar.progress(percent_complete + 1, text=text)
+        df = run_pipeline(raw_df)
+        my_bar.empty()
 
-    #----------------------------------------------------------------------------
-    df = run_pipeline(raw_df)
-    my_bar.empty()
+        st.session_state["pipeline_key"]    = pipeline_key
+        st.session_state["pipeline_result"] = df
+else:
+    df = st.session_state["pipeline_result"]
 
 # ── Main tabs ────────────────────────────────────────────────────────────────
 tabs = st.tabs([

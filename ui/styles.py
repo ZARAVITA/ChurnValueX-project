@@ -151,14 +151,15 @@ input, select, textarea {{
 }}
 
 /* ════════════════════════════════════════════════════
-   TABS
+   TABS  ← FIXED: clear separations between tabs
 ════════════════════════════════════════════════════ */
 .stTabs [data-baseweb="tab-list"] {{
-    gap: 0;
+    gap: 4px;
     background: {t['bg_card2']};
     border-radius: 14px;
-    padding: 5px;
-    border: 1px solid {t['border']};
+    padding: 5px 6px;
+    border: 1px solid {t['border_strong']};
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
 }}
 .stTabs [data-baseweb="tab"] {{
     border-radius: 10px;
@@ -167,14 +168,39 @@ input, select, textarea {{
     font-weight: 600;
     color: {t['text_secondary']} !important;
     background: transparent;
-    border: none;
-    transition: all 0.2s;
+    border: 1px solid transparent !important;
+    transition: all 0.18s ease;
+    position: relative;
 }}
+/* Separator pipe between inactive tabs */
+.stTabs [data-baseweb="tab"]:not(:last-child)::after {{
+    content: '';
+    position: absolute;
+    right: -3px;
+    top: 22%;
+    height: 56%;
+    width: 1px;
+    background: {t['border_strong']};
+    border-radius: 1px;
+    opacity: 0.7;
+    pointer-events: none;
+}}
+/* Hide separator adjacent to the active tab */
+.stTabs [aria-selected="true"]::after {{
+    opacity: 0 !important;
+}}
+/* Hover state for inactive tabs */
+.stTabs [data-baseweb="tab"]:hover:not([aria-selected="true"]) {{
+    background: {t['bg_card']} !important;
+    border-color: {t['border']} !important;
+    color: {t['text_primary']} !important;
+}}
+/* Active tab */
 .stTabs [aria-selected="true"] {{
     background: {t['tab_active_bg']} !important;
     color: {t['accent_blue']} !important;
     border: 1px solid {t['tab_active_bd']} !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
 }}
 .stTabs [data-baseweb="tab-border"] {{ display: none !important; }}
 .stTabs [data-baseweb="tab-panel"] {{ padding-top: 1.5rem; }}
