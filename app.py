@@ -31,7 +31,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
     page_icon="⬡",
 )
-
+import time
 # ── Imports (after page config) ───────────────────────────────────────────────
 from ui.sidebar import render_sidebar
 from ui.styles  import build_css
@@ -70,8 +70,28 @@ if raw_df is None:
     st.stop()
 
 # ── Run pipeline ─────────────────────────────────────────────────────────────
-with st.spinner("🔄  Analyse en cours…"):
+with st.spinner("⬡  ChurnIQ is thinking..."):
+    #----------------------------------Ajout nouvel--------------------------------
+    progress_text = "Initializing ChurnIQ AI Engine..."
+    my_bar = st.progress(0, text=progress_text)
+
+    for percent_complete in range(100):
+        time.sleep(0.03)
+
+        if percent_complete < 30:
+            text = "Analyzing customer behavior..."
+        elif percent_complete < 60:
+            text = "Computing churn probabilities..."
+        elif percent_complete < 90:
+            text = "Generating AI insights..."
+        else:
+            text = "Finalizing intelligence dashboard..."
+
+        my_bar.progress(percent_complete + 1, text=text)
+
+    #----------------------------------------------------------------------------
     df = run_pipeline(raw_df)
+    my_bar.empty()
 
 # ── Main tabs ────────────────────────────────────────────────────────────────
 tabs = st.tabs([
