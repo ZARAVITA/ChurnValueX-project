@@ -70,16 +70,16 @@ if raw_df is None:
     st.stop()
 
 # ── Run pipeline ─────────────────────────────────────────────────────────────
-with st.spinner("🔄  Analyse en cours — modèles XGBoost · Weibull AFT · BG/NBD…"):
+with st.spinner("🔄  Analyse en cours…"):
     df = run_pipeline(raw_df)
 
 # ── Main tabs ────────────────────────────────────────────────────────────────
 tabs = st.tabs([
-    "🏠  Vue d'ensemble",
-    "📊  Indicateurs",
-    "🎯  Matrice de décision",
-    "👥  Clients",
-    "💡  Insights & Simulation",
+    "Vue d'ensemble",
+    "Indicateurs",
+    "Matrice de décision",
+    "Clients",
+    "Insights & Simulation",
 ])
 
 with tabs[0]:
