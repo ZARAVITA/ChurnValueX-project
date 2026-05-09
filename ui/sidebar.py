@@ -51,6 +51,7 @@ def render_sidebar() -> tuple:
 
         # ── Theme toggle ───────────────────────────────────────────────────────
         dark_mode = st.toggle("🌙  Dark mode", value=st.session_state.get("dark_mode", False))
+        # Only update dark_mode in session state — never clear pipeline data
         st.session_state["dark_mode"] = dark_mode
         theme = DARK if dark_mode else LIGHT
 
@@ -65,13 +66,17 @@ def render_sidebar() -> tuple:
             try:
                 raw_df = pd.read_excel("data/E Commerce Dataset.xlsx", sheet_name=1)
                 st.session_state["raw_df"] = raw_df
-                st.session_state["pipeline_done"] = False
+                # Clear pipeline cache so it reruns with the new dataset
+                st.session_state.pop("pipeline_df",  None)
+                st.session_state.pop("pipeline_key", None)
                 st.success(f"✓ {len(raw_df):,} clients chargés")
             except Exception:
                 from utils.synthetic import generate_synthetic_data
                 raw_df = generate_synthetic_data(900)
                 st.session_state["raw_df"] = raw_df
-                st.session_state["pipeline_done"] = False
+                # Clear pipeline cache
+                st.session_state.pop("pipeline_df",  None)
+                st.session_state.pop("pipeline_key", None)
                 st.info("Fichier non trouvé — dataset synthétique généré (900 clients).")
 
         st.divider()
@@ -107,10 +112,15 @@ et l'historique de chaque client.
 
         # ── Status ─────────────────────────────────────────────────────────────
         if raw_df is not None:
+            pipeline_ready = "pipeline_df" in st.session_state
+            status_color = "#16A34A" if pipeline_ready else "#D97706"
+            status_bg    = "rgba(34,197,94,0.12)"  if pipeline_ready else "rgba(217,119,6,0.12)"
+            status_bd    = "rgba(34,197,94,0.3)"   if pipeline_ready else "rgba(217,119,6,0.3)"
+            status_text  = f"✓ Dataset actif — {len(raw_df):,} clients" if pipeline_ready else f"⟳ {len(raw_df):,} clients — analyse en cours..."
             st.markdown(f"""
-<div style="margin-top:0.8rem;padding:0.7rem 1rem;background:rgba(34,197,94,0.12);
-border:1px solid rgba(34,197,94,0.3);border-radius:10px;font-size:0.78rem;color:#16A34A">
-✓ Dataset actif — {len(raw_df):,} clients
+<div style="margin-top:0.8rem;padding:0.7rem 1rem;background:{status_bg};
+border:1px solid {status_bd};border-radius:10px;font-size:0.78rem;color:{status_color}">
+{status_text}
 </div>
 """, unsafe_allow_html=True)
 

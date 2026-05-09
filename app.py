@@ -371,25 +371,25 @@ if raw_df is None:
     st.stop()
 
 
-# ── Run pipeline ─────────────────────────────────────────────────────────────
-with st.spinner("⬡  ChurnIQ is thinking..."):
-    progress_text = "Initializing ChurnIQ AI Engine..."
-    my_bar = st.progress(0, text=progress_text)
+# ── Run pipeline — only once per data load ───────────────────────────────────
+# Keyed on dataset identity so theme toggles and filter changes never retrigger it.
+_raw_key = f"{len(raw_df)}_{int(raw_df.iloc[0, 0])}"
 
-    for percent_complete in range(100):
-        time.sleep(0.03)
-        if percent_complete < 30:
-            text = "Analyzing customer behavior..."
-        elif percent_complete < 60:
-            text = "Computing churn probabilities..."
-        elif percent_complete < 90:
-            text = "Generating AI insights..."
-        else:
-            text = "Finalizing intelligence dashboard..."
-        my_bar.progress(percent_complete + 1, text=text)
+if st.session_state.get("pipeline_key") != _raw_key:
+    with st.spinner("ChurnIQ is thinking..."):
+        my_bar = st.progress(0, text="Initializing ChurnIQ AI Engine...")
+        for pct in range(100):
+            time.sleep(0.03)
+            if pct < 30:   _txt = "Analyzing customer behavior..."
+            elif pct < 60: _txt = "Computing churn probabilities..."
+            elif pct < 90: _txt = "Generating AI insights..."
+            else:          _txt = "Finalizing intelligence dashboard..."
+            my_bar.progress(pct + 1, text=_txt)
+        st.session_state["pipeline_df"]  = run_pipeline(raw_df)
+        st.session_state["pipeline_key"] = _raw_key
+        my_bar.empty()
 
-    df = run_pipeline(raw_df)
-    my_bar.empty()
+df = st.session_state["pipeline_df"]
 
 
 # ── Main tabs ────────────────────────────────────────────────────────────────
