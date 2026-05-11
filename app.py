@@ -351,30 +351,13 @@ from utils.validator import validate_dataset
 
 def _show_incompatible_error(result: dict, t: dict):
     """Render a premium, business-friendly incompatibility card."""
-    # Pre-extract all values as plain variables — no backslashes inside f-string expressions (Python < 3.12)
-    issues_html    = "".join("<li>" + i + "</li>" for i in result["issues"])
-    warnings_html  = "".join("<li>" + w + "</li>" for w in result["warnings"]) if result["warnings"] else ""
-    score_color    = "#EF4444" if result["score"] < 40 else "#F59E0B"
-    present_count  = len(result["present"])
-    total_count    = 20
-    score_val      = result["score"]
     bg_card        = t["bg_card"]
     text_primary   = t["text_primary"]
     text_secondary = t["text_secondary"]
-    text_muted     = t["text_muted"]
+    accent_blue    = t["accent_blue"]
     accent_bg      = t["accent_blue_bg"]
     accent_bd      = t["accent_blue_bd"]
     border_col     = t["border"]
-
-    # Warnings block — built as a plain string before the f-string
-    if warnings_html:
-        warnings_block = (
-            '<div class="compat-issues-title" style="color:#F59E0B !important">'
-            "Avertissements</div>"
-            '<ul class="compat-warnings">' + warnings_html + "</ul>"
-        )
-    else:
-        warnings_block = ""
 
     html = (
         "<style>"
@@ -385,31 +368,22 @@ def _show_incompatible_error(result: dict, t: dict):
         f".compat-card {{ background:{bg_card};border:1.5px solid #FCA5A5;border-left:4px solid #EF4444;"
         "border-radius:16px;padding:1.8rem 2.2rem;max-width:720px;margin:2rem auto;"
         "animation:slideIn .35s ease both;font-family:'Plus Jakarta Sans',sans-serif;}"
-        ".compat-header {display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.2rem;}"
+        ".compat-header {display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.4rem;}"
         ".compat-icon {width:42px;height:42px;border-radius:12px;background:rgba(239,68,68,0.12);"
         "border:1px solid rgba(239,68,68,0.25);display:flex;align-items:center;justify-content:center;"
         "font-size:1.2rem;flex-shrink:0;}"
         f".compat-title {{font-size:1.05rem;font-weight:800;color:{text_primary} !important;"
         "margin-bottom:0.3rem;letter-spacing:-0.02em;}"
         f".compat-sub {{font-size:0.82rem;color:{text_secondary} !important;line-height:1.5;}}"
-        ".compat-score-row {display:flex;align-items:center;gap:0.8rem;margin-bottom:1.1rem;"
-        "padding:0.75rem 1rem;background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.12);border-radius:10px;}"
-        f".compat-score-val {{font-size:1.4rem;font-weight:900;color:{score_color} !important;"
-        "font-family:'DM Mono',monospace;letter-spacing:-0.02em;line-height:1;}"
-        f".compat-score-label {{font-size:0.75rem;color:{text_muted} !important;line-height:1.4;}}"
-        ".compat-issues-title {font-size:0.72rem;font-family:'DM Mono',monospace;letter-spacing:0.1em;"
-        "text-transform:uppercase;color:#EF4444 !important;margin-bottom:0.5rem;}"
-        ".compat-issues {list-style:none;padding:0;margin:0 0 1rem;display:flex;flex-direction:column;gap:0.4rem;}"
-        f".compat-issues li {{font-size:0.83rem;color:{text_secondary} !important;padding:0.45rem 0.75rem;"
-        "background:rgba(239,68,68,0.06);border-radius:8px;border-left:2px solid #EF4444;line-height:1.45;}"
-        ".compat-warnings {list-style:none;padding:0;margin:0 0 1rem;display:flex;flex-direction:column;gap:0.35rem;}"
-        f".compat-warnings li {{font-size:0.82rem;color:{text_secondary} !important;padding:0.4rem 0.7rem;"
-        "background:rgba(245,158,11,0.07);border-radius:8px;border-left:2px solid #F59E0B;}"
         f".compat-guide-box {{background:{accent_bg};border:1px solid {accent_bd};border-radius:12px;"
-        "padding:1rem 1.2rem;margin-top:0.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;}"
+        "padding:1rem 1.2rem;display:flex;align-items:center;gap:1rem;margin-top:0;}}"
         f".compat-guide-text {{font-size:0.84rem;color:{text_secondary} !important;line-height:1.55;}}"
         f".compat-guide-text strong {{color:{text_primary} !important;}}"
-        f".compat-divider {{border:none;border-top:1px solid {border_col};margin:1rem 0;}}"
+        f".compat-cta {{background:{accent_bg};border:1px solid {accent_bd};border-radius:12px;"
+        "padding:1rem 1.2rem;margin-top:1rem;}"
+        f".compat-cta-text {{font-size:0.84rem;color:{text_secondary} !important;line-height:1.6;}}"
+        f".compat-cta-text strong {{color:{text_primary} !important;}}"
+        f".compat-cta-link {{color:{accent_blue} !important;font-weight:600;text-decoration:none;}}"
         "</style>"
         "<div class='compat-card'>"
         "<div class='compat-header'>"
@@ -419,40 +393,22 @@ def _show_incompatible_error(result: dict, t: dict):
         "<div class='compat-sub'>Le dataset import&eacute; ne correspond pas &agrave; la structure attendue par le syst&egrave;me. "
         "L'analyse ne peut pas &ecirc;tre lanc&eacute;e.</div>"
         "</div></div>"
-        "<div class='compat-score-row'>"
-        f"<div class='compat-score-val'>{score_val}%</div>"
-        "<div class='compat-score-label'>"
-        f"Score de compatibilit&eacute;<br><span style='font-family:DM Mono,monospace;font-size:0.68rem'>{present_count} / {total_count} colonnes reconnues</span>"
-        "</div></div>"
-        "<div class='compat-issues-title'>Probl&egrave;mes d&eacute;tect&eacute;s</div>"
-        f"<ul class='compat-issues'>{issues_html}</ul>"
-        f"{warnings_block}"
-        "<hr class='compat-divider'>"
         "<div class='compat-guide-box'>"
         "<div class='compat-guide-text'>"
-        "<strong>&#128216; Consultez le Guide des donn&eacute;es</strong><br>"
+        "<strong>&#128216; Consultez l'onglet Guide des donn&eacute;es</strong><br>"
         "D&eacute;couvrez les colonnes requises, les formats compatibles et la structure recommand&eacute;e pour l'analyse ChurnIQ."
-        "</div></div></div>"
+        "</div></div>"
+        "<div class='compat-cta'>"
+        "<div class='compat-cta-text'>"
+        "ChurnIQ n'est qu'un exemple de ce qu'il est possible de construire. "
+        "<strong>Contactez-nous</strong> pour cr&eacute;er des solutions intelligentes "
+        "adapt&eacute;es &agrave; vos propres donn&eacute;es et enjeux m&eacute;tier.<br><br>"
+        f"<a href='mailto:zaravitamds18@gmail.com' class='compat-cta-link'>"
+        "&rarr; zaravitamds18@gmail.com</a>"
+        "</div></div>"
+        "</div>"
     )
     st.markdown(html, unsafe_allow_html=True)
-
-    # Guide button — outside markdown block
-    _, btn_col, _ = st.columns([2, 3, 2])
-    with btn_col:
-        st.markdown(
-            "<style>.open-guide-btn .stButton > button {"
-            "background:#2563EB !important;color:#fff !important;border:none !important;"
-            "border-radius:10px !important;font-size:0.86rem !important;font-weight:700 !important;"
-            "padding:0.65rem 1.4rem !important;width:100% !important;"
-            "box-shadow:0 4px 14px rgba(37,99,235,0.3) !important;transition:all 0.2s ease !important;}"
-            "</style>",
-            unsafe_allow_html=True,
-        )
-        st.markdown('<div class="open-guide-btn">', unsafe_allow_html=True)
-        if st.button("📖  Ouvrir le Guide des données", use_container_width=True, key="btn_open_guide_err"):
-            st.session_state["show_data_guide"] = True
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
 
 
 # ── Validate dataset before pipeline ────────────────────────────────────────
