@@ -44,12 +44,12 @@ COLUMN_DOC_FULL = [
 ]
 
 USE_CASES = [
-    ("🔍", "Détection précoce du churn",             "Identifiez les signaux faibles avant qu'un client ne parte."),
-    ("💎", "Priorisation à forte valeur",            "Concentrez les efforts sur les clients générant le plus de revenu."),
-    ("💰", "Analyse du revenu exposé",               "Quantifiez le pipeline financier à risque sur 12 mois."),
-    ("🎯", "Segmentation marketing intelligente",    "4 quadrants actionnables pour des stratégies différenciées."),
-    ("📊", "Pilotage CRM",                           "Intégrez directement les scores dans votre CRM/CDP."),
-    ("📩", "Optimisation campagnes rétention",       "Améliorez le ROI en ciblant les bons clients au bon moment."),
+    ("Détection précoce du churn",          "Identifiez les signaux faibles avant qu'un client ne parte."),
+    ("Priorisation à forte valeur",         "Concentrez les efforts sur les clients générant le plus de revenu."),
+    ("Analyse du revenu exposé",            "Quantifiez le pipeline financier à risque sur 12 mois."),
+    ("Segmentation marketing intelligente", "4 quadrants actionnables pour des stratégies différenciées."),
+    ("Pilotage CRM",                        "Intégrez directement les scores dans votre CRM/CDP."),
+    ("Optimisation campagnes rétention",    "Améliorez le ROI en ciblant les bons clients au bon moment."),
 ]
 
 COMPATIBLE = ["CRM", "ERP", "E-commerce", "Retail", "Abonnements", "Services digitaux", "Plateformes B2B"]
@@ -104,7 +104,7 @@ def render(t: dict):
     <div style="display:inline-block;background:{t['accent_blue_bg']};border:1px solid {t['accent_blue_bd']};
                 color:{t['accent_blue']};padding:0.25rem 0.9rem;border-radius:100px;font-size:0.62rem;
                 font-family:'DM Mono',monospace;letter-spacing:0.14em;text-transform:uppercase;
-                margin-bottom:1rem">📖 Documentation</div>
+                margin-bottom:1rem">Documentation</div>
     <h1 style="font-size:2.2rem;font-weight:800;letter-spacing:-0.03em;
                color:{t['text_primary']};margin:0 0 0.5rem;line-height:1.1">
         Guide des données
@@ -156,7 +156,7 @@ def render(t: dict):
             padding:1.5rem 1.8rem;height:100%">
     <div class="sec-label">Dataset de démonstration</div>
     <div style="font-size:1rem;font-weight:700;color:{t['text_primary']};margin-bottom:0.6rem">
-        📥 Télécharger le dataset Excel
+        Télécharger le dataset Excel
     </div>
     <p style="font-size:0.8rem;color:{t['text_secondary']};line-height:1.6;margin:0 0 1rem">
         Dataset prêt à l'emploi pour CRM et e-commerce.<br>
@@ -165,7 +165,7 @@ def render(t: dict):
 """, unsafe_allow_html=True)
 
         st.download_button(
-            label="⬇  Télécharger le dataset Excel",
+            label="Télécharger le dataset Excel",
             data=excel_bytes,
             file_name="churniq_demo_dataset.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -177,7 +177,7 @@ def render(t: dict):
 
     # ── Variables table ───────────────────────────────────────────────────────
     st.markdown('<div class="sec-label">Variables utilisées</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="sec-title">📊 Variables principales</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="sec-title">Variables principales</div>', unsafe_allow_html=True)
 
     st.markdown(
         f'<div style="background:{t["bg_card"]};border:1px solid {t["border"]};'
@@ -198,7 +198,7 @@ def render(t: dict):
 
     # ── Adaptability ──────────────────────────────────────────────────────────
     st.markdown('<div class="sec-label">Flexibilité</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="sec-title">⚙️ Adaptabilité entreprise</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="sec-title">Adaptabilité entreprise</div>', unsafe_allow_html=True)
 
     adapt_items = [
         ("Colonnes disponibles", "Le pipeline s'adapte aux colonnes présentes dans votre dataset."),
@@ -220,15 +220,14 @@ def render(t: dict):
 
     # ── Use cases ─────────────────────────────────────────────────────────────
     st.markdown('<div class="sec-label">Applications</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="sec-title">✓ Cas d\'utilisation typiques</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="sec-title">Cas d\'utilisation typiques</div>', unsafe_allow_html=True)
 
     uc_cols = st.columns(3)
-    for i, (icon, title, desc) in enumerate(USE_CASES):
+    for i, (title, desc) in enumerate(USE_CASES):
         with uc_cols[i % 3]:
             st.markdown(f"""
 <div style="background:{t['bg_card']};border:1px solid {t['border']};border-radius:14px;
             padding:1.1rem 1.3rem;margin-bottom:0.8rem">
-    <div style="font-size:1.3rem;margin-bottom:0.5rem">{icon}</div>
     <div style="font-size:0.85rem;font-weight:700;color:{t['text_primary']};margin-bottom:0.3rem">{title}</div>
     <div style="font-size:0.78rem;color:{t['text_secondary']};line-height:1.55">{desc}</div>
 </div>""", unsafe_allow_html=True)
