@@ -216,6 +216,23 @@ def render(t: dict):
     <div style="font-size:0.75rem;color:{t['text_secondary']};line-height:1.55">{desc}</div>
 </div>""", unsafe_allow_html=True)
 
+    # ── CTA after adaptability cards ─────────────────────────────────────────
+    st.markdown(f"""
+<div style="margin-top:1rem;padding:1rem 1.4rem;background:{t['accent_blue_bg']};
+            border:1px solid {t['accent_blue_bd']};border-left:3px solid {t['accent_blue']};
+            border-radius:12px;font-size:0.85rem;line-height:1.6;">
+    <span style="color:{t['text_secondary']};">
+        ChurnIQ n'est qu'un exemple de ce qu'il est possible de construire.
+        <strong style="color:{t['text_primary']};">Contactez-nous</strong> pour cr&eacute;er des solutions intelligentes
+        adapt&eacute;es &agrave; vos propres donn&eacute;es et enjeux m&eacute;tier.<br>
+        <a href="mailto:zaravitamds18@gmail.com"
+           style="color:{t['accent_blue']};font-weight:600;text-decoration:none;">
+            &rarr; zaravitamds18@gmail.com
+        </a>
+    </span>
+</div>
+""", unsafe_allow_html=True)
+
     st.markdown('<hr class="sec-divider">', unsafe_allow_html=True)
 
     # ── Use cases ─────────────────────────────────────────────────────────────
