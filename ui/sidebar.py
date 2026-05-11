@@ -75,6 +75,7 @@ section[data-testid="stSidebar"] [data-testid="stFileUploader"] button {{ paddin
 .sb-ent-list {{ list-style:none;padding:0;margin:0 0 .6rem;display:flex;flex-direction:column;gap:.28rem; }}
 .sb-ent-list li {{ font-size:.71rem;color:{t['text_muted']} !important;display:flex;align-items:center;gap:5px; }}
 .sb-ent-list li::before {{ content:'\u2192';color:{t['accent_blue']} !important;font-weight:700;font-size:.68rem; }}
+.sb-ent-cta {{ font-size:.69rem;color:{t['text_secondary']} !important;line-height:1.55;margin-bottom:.6rem;padding:.5rem .6rem;background:{t['accent_blue_bg']};border:1px solid {t['accent_blue_bd']};border-radius:7px; }}
 .sb-ent-email {{ display:inline-block;font-size:.68rem;font-family:'DM Mono',monospace;color:{t['accent_blue']} !important;text-decoration:none;padding:.28rem .65rem;background:{t['accent_blue_bg']};border:1px solid {t['accent_blue_bd']};border-radius:7px;letter-spacing:.02em; }}
 section[data-testid="stSidebar"] .guide-btn-wrap .stButton > button {{ background:{t['bg_card2']} !important;color:{t['text_secondary']} !important;border:1px solid {t['border']} !important;border-radius:10px !important;font-size:.8rem !important;font-weight:600 !important;padding:.55rem .9rem !important;width:100% !important;transition:all .18s ease !important;text-align:left !important; }}
 section[data-testid="stSidebar"] .guide-btn-wrap .stButton > button:hover {{ background:{t['accent_blue_bg']} !important;border-color:{t['accent_blue_bd']} !important;color:{t['accent_blue']} !important;opacity:1 !important; }}
@@ -190,6 +191,8 @@ def render_sidebar():
             '<li>Vos r&egrave;gles de scoring</li>'
             '<li>Vos objectifs m&eacute;tier</li>'
             '</ul>'
+            '<p class="sb-ent-cta">ChurnIQ n\'est qu\'un exemple de ce qu\'il est possible de construire. '
+            'Contactez-nous pour cr&eacute;er des solutions intelligentes adapt&eacute;es &agrave; vos propres donn&eacute;es et enjeux m&eacute;tier.</p>'
             '<a class="sb-ent-email" href="mailto:zaravitamds18@gmail.com">&#128233; zaravitamds18@gmail.com</a>'
             '</div></div>',
             unsafe_allow_html=True)
