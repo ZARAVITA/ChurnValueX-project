@@ -14,6 +14,19 @@ section[data-testid="stSidebar"] {{
     border-right: 1px solid {t['border']} !important;
     padding-top: 0 !important;
 }}
+/* Supprimer l'espace natif Streamlit au-dessus du premier élément */
+section[data-testid="stSidebar"] > div {{
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stSidebarContent"] > div:first-child {{
+    padding-top: 0.4rem !important;
+    margin-top: 0 !important;
+}}
+/* Réduire l'espace entre le header brand et "Initialiser l'analyse" */
+section[data-testid="stSidebar"] hr {{
+    margin: 0.3rem 0 !important;
+}}
 section[data-testid="stSidebar"] .sb-brand-cols > div[data-testid="stHorizontalBlock"] {{
     gap: 0 !important; align-items: flex-start !important;
 }}
@@ -21,7 +34,9 @@ section[data-testid="stSidebar"] .sb-brand-cols [data-testid="column"] {{ paddin
 section[data-testid="stSidebar"] .sb-brand-cols [data-testid="stVerticalBlockBorderWrapper"],
 section[data-testid="stSidebar"] .sb-brand-cols .stVerticalBlock {{ gap: 0 !important; padding: 0 !important; }}
 section[data-testid="stSidebar"] .sb-brand-cols .element-container {{ margin: 0 !important; padding: 0 !important; }}
-.sb-brand-name {{ font-size:1.2rem;font-weight:900;letter-spacing:-.03em;color:{t['text_primary']} !important;line-height:1; }}
+.sb-brand-name {{ font-size:1.2rem;font-weight:900;letter-spacing:-.03em;line-height:1; }}
+.sb-brand-name .churn {{ color:#E53E3E !important; }}
+.sb-brand-name .iq {{ color:#38B2AC !important; }}
 .sb-brand-sub {{ font-size:.58rem;opacity:.4;font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:{t['text_muted']} !important; }}
 section[data-testid="stSidebar"] .dark-toggle-wrap .stButton > button {{
     background:{t['bg_card2']} !important;border:1px solid {t['border']} !important;
@@ -43,7 +58,7 @@ section[data-testid="stSidebar"] .dark-toggle-wrap .stButton > button:hover {{
 section[data-testid="stSidebar"] .launch-btn-wrap .stButton > button,
 section[data-testid="stSidebar"] .launch-upload-btn-wrap .stButton > button {{
     background: #1E40AF !important;
-    color: #000000 !important;
+    color: #ffffff !important;
     border: none !important;
     border-radius: 12px !important;
     font-size: .86rem !important;
@@ -104,12 +119,12 @@ def render_sidebar():
         _bc, _tc = st.columns([6, 1])
         with _bc:
             st.markdown(
-                '<div style="padding:.7rem 0 .4rem">'
-                '<div class="sb-brand-name">\u29c1 ChurnIQ</div>'
+                '<div style="padding:.1rem 0 .1rem">'
+                '<div class="sb-brand-name"><span class="churn">Churn</span><span class="iq">IQ</span></div>'
                 '<div class="sb-brand-sub">Customer Intelligence Platform</div>'
                 '</div>', unsafe_allow_html=True)
         with _tc:
-            st.markdown('<div class="dark-toggle-wrap" style="padding-top:.72rem">', unsafe_allow_html=True)
+            st.markdown('<div class="dark-toggle-wrap" style="padding-top:.15rem">', unsafe_allow_html=True)
             if st.button(icon, key="dark_toggle", help="Dark / light mode"):
                 st.session_state["dark_mode"] = not dark_mode
                 st.rerun()
@@ -120,7 +135,7 @@ def render_sidebar():
         theme = DARK if dark_mode else LIGHT
         st.markdown(_sidebar_extra_css(theme), unsafe_allow_html=True)
 
-        st.divider()
+        st.markdown('<hr style="margin:.2rem 0 .5rem;border-color:' + theme['border'] + '">', unsafe_allow_html=True)
 
         st.markdown('<span class="sb-section-title">Initialiser l\'analyse client</span>', unsafe_allow_html=True)
         st.markdown('<span class="sb-section-sub">Lancez la démo intégrée ou importez vos propres données.</span>', unsafe_allow_html=True)

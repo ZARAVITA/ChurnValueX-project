@@ -37,6 +37,18 @@ section[data-testid="stSidebar"] label,
 section[data-testid="stSidebar"] small {{
     color: {t['text_primary']} !important;
 }}
+/* Exceptions couleurs brand ChurnIQ */
+section[data-testid="stSidebar"] .sb-brand-name .churn {{
+    color: #E53E3E !important;
+}}
+section[data-testid="stSidebar"] .sb-brand-name .iq {{
+    color: #38B2AC !important;
+}}
+/* Exception : boutons primaires sidebar — texte toujours blanc */
+section[data-testid="stSidebar"] button[data-testid="baseButton-primary"],
+section[data-testid="stSidebar"] button[data-testid="baseButton-primary"] * {{
+    color: #ffffff !important;
+}}
 section[data-testid="stSidebar"] [data-testid="stWidgetLabel"] p,
 section[data-testid="stSidebar"] .stMarkdown p,
 section[data-testid="stSidebar"] .stMarkdown li {{
@@ -424,9 +436,12 @@ input, select, textarea {{
 
 /* ── BOUTONS SIDEBAR PRIMAIRES (Lancer) — data-testid="baseButton-primary" ──
    Streamlit génère ce data-testid quand type="primary" est passé à st.button.  */
-section[data-testid="stSidebar"] button[data-testid="baseButton-primary"] {{
+section[data-testid="stSidebar"] button[data-testid="baseButton-primary"],
+section[data-testid="stSidebar"] button[data-testid="baseButton-primary"] p,
+section[data-testid="stSidebar"] button[data-testid="baseButton-primary"] span,
+section[data-testid="stSidebar"] button[data-testid="baseButton-primary"] * {{
     background:    #1E40AF !important;
-    color:         #000000 !important;
+    color:         #ffffff !important;
     border:        none !important;
     border-radius: 12px !important;
     font-weight:   700 !important;
