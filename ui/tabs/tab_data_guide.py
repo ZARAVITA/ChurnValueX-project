@@ -1,6 +1,5 @@
 """
 ui/tabs/tab_data_guide.py — Full-page premium Data Guide.
-Replaces the old sidebar expander "À propos des données".
 """
 
 import streamlit as st
@@ -88,9 +87,12 @@ def _col_table_html(rows, t):
 
 
 def render(t: dict):
-    # ── Back button ───────────────────────────────────────────────────────────
-    if st.button("← Retour au dashboard", key="guide_back"):
+    # ── Bouton Retour ─────────────────────────────────────────────────────────
+    if st.button("\u2190 Retour au dashboard", key="guide_back"):
+        # Ferme le guide ET remet le checkbox à False pour que le prochain
+        # clic sur "Guide d'intégration" fonctionne correctement.
         st.session_state["show_data_guide"] = False
+        st.session_state["guide_checkbox"] = False
         st.rerun()
 
     # ── Hero ──────────────────────────────────────────────────────────────────
@@ -126,7 +128,7 @@ def render(t: dict):
     ])
     st.markdown(f'<div style="margin-bottom:2rem">{badges}</div>', unsafe_allow_html=True)
 
-    # ── Objectif système + Download ────────────────────────────────────────────
+    # ── Objectif système + Download ───────────────────────────────────────────
     g1, g2 = st.columns([3, 2])
 
     with g1:
@@ -147,7 +149,6 @@ def render(t: dict):
 """, unsafe_allow_html=True)
 
     with g2:
-        # Generate synthetic demo for download
         demo_df = generate_synthetic_data(900)
         excel_bytes = to_excel_bytes(demo_df)
 
@@ -177,7 +178,7 @@ def render(t: dict):
 
     # ── Variables table ───────────────────────────────────────────────────────
     st.markdown('<div class="sec-label">Variables utilisées</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="sec-title">Variables principales</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sec-title">Variables principales</div>', unsafe_allow_html=True)
 
     st.markdown(
         f'<div style="background:{t["bg_card"]};border:1px solid {t["border"]};'
@@ -198,7 +199,7 @@ def render(t: dict):
 
     # ── Adaptability ──────────────────────────────────────────────────────────
     st.markdown('<div class="sec-label">Flexibilité</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="sec-title">Adaptabilité entreprise</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sec-title">Adaptabilité entreprise</div>', unsafe_allow_html=True)
 
     adapt_items = [
         ("Colonnes disponibles", "Le pipeline s'adapte aux colonnes présentes dans votre dataset."),
@@ -216,15 +217,14 @@ def render(t: dict):
     <div style="font-size:0.75rem;color:{t['text_secondary']};line-height:1.55">{desc}</div>
 </div>""", unsafe_allow_html=True)
 
-    # ── CTA after adaptability cards ─────────────────────────────────────────
     st.markdown(f"""
 <div style="margin-top:1rem;padding:1rem 1.4rem;background:{t['accent_blue_bg']};
             border:1px solid {t['accent_blue_bd']};border-left:3px solid {t['accent_blue']};
             border-radius:12px;font-size:0.85rem;line-height:1.6;">
     <span style="color:{t['text_secondary']};">
         ChurnIQ n'est qu'un exemple de ce qu'il est possible de construire.
-        <strong style="color:{t['text_primary']};">Contactez-nous</strong> pour cr&eacute;er des solutions intelligentes
-        adapt&eacute;es &agrave; vos propres donn&eacute;es et enjeux m&eacute;tier.<br>
+        <strong style="color:{t['text_primary']};">Contactez-nous</strong> pour créer des solutions intelligentes
+        adaptées à vos propres données et enjeux métier.<br>
         <a href="mailto:zaravitamds18@gmail.com"
            style="color:{t['accent_blue']};font-weight:600;text-decoration:none;">
             &rarr; zaravitamds18@gmail.com
@@ -237,7 +237,7 @@ def render(t: dict):
 
     # ── Use cases ─────────────────────────────────────────────────────────────
     st.markdown('<div class="sec-label">Applications</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="sec-title">Cas d\'utilisation typiques</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sec-title">Cas d\'utilisation typiques</div>', unsafe_allow_html=True)
 
     uc_cols = st.columns(3)
     for i, (title, desc) in enumerate(USE_CASES):

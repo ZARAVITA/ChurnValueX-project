@@ -128,7 +128,7 @@ def render_sidebar():
         raw_df = st.session_state.get("raw_df", None)
 
         st.markdown('<div class="launch-btn-wrap">', unsafe_allow_html=True)
-        if st.button("\u25b6  Lancer une simulation business", use_container_width=True, key="btn_demo"):
+        if st.button("\u25b6  Lancer une simulation business", use_container_width=True, key="btn_demo", type="primary"):
             try:
                 raw_df = pd.read_excel("data/E Commerce Dataset.xlsx", sheet_name=1)
                 st.session_state["raw_df"] = raw_df
@@ -195,7 +195,7 @@ def render_sidebar():
                 f'<div style="font-size:.69rem;color:{theme["protect_text"]};font-family:\'DM Mono\',monospace;padding:.2rem .1rem;margin-top:.1rem">'
                 f'\u2713 {_name} \u2014 {_n:,} lignes</div>', unsafe_allow_html=True)
             st.markdown('<div class="launch-upload-btn-wrap">', unsafe_allow_html=True)
-            if st.button("\u25b6  Lancer l\u2019analyse pr\u00e9dictive", use_container_width=True, key="btn_launch_upload"):
+            if st.button("\u25b6  Lancer l\u2019analyse pr\u00e9dictive", use_container_width=True, key="btn_launch_upload", type="primary"):
                 raw_df = st.session_state["uploaded_df"]
                 st.session_state["raw_df"] = raw_df
                 st.session_state["pipeline_key"] = None
@@ -227,71 +227,16 @@ def render_sidebar():
 
         st.divider()
 
-        # ── Bouton Guide — st.checkbox caché + label stylé ────────────────────
-        # APPROCHE RADICALE FINALE : on n'utilise PAS st.button pour le Guide.
-        # On utilise st.checkbox(label_visibility="collapsed") + un <label> HTML
-        # stylé qui agit comme bouton. Le checkbox Streamlit est caché (opacity:0,
-        # position:absolute), le label HTML visible est entièrement sous notre
-        # contrôle CSS — 0 interférence avec styles.py.
-        show_guide = st.session_state.get("show_data_guide", False)
-
-        # Checkbox Streamlit caché — sa valeur déclenche le guide
-        guide_checked = st.checkbox(
-            "guide_trigger",
-            key="guide_checkbox",
-            label_visibility="collapsed"
-        )
-        if guide_checked:
+        # ── Bouton Guide ──────────────────────────────────────────────────────
+        # st.button normal. La couleur #708090 est gérée dans styles.py via
+        # section[data-testid="stSidebar"] [data-testid="stButton"]:last-child button
+        # qui cible le dernier bouton de la sidebar (toujours le Guide).
+        if st.button(
+            "📖  Guide d’intégration des données",
+            use_container_width=True,
+            key="btn_guide"
+        ):
             st.session_state["show_data_guide"] = True
-            # Reset immédiat pour que le checkbox revienne à False après rerun
-            st.session_state["guide_checkbox"] = False
-
-        # Label HTML stylé superposé sur le checkbox — agit visuellement comme bouton
-        st.markdown(f"""
-<style>
-/* Cache le checkbox Streamlit mais garde son interactivité */
-section[data-testid="stSidebar"] [data-testid="stCheckbox"] {{
-    position: relative !important;
-    height: 44px !important;
-    margin-top: -44px !important;
-    opacity: 0 !important;
-    cursor: pointer !important;
-    z-index: 2 !important;
-    width: 100% !important;
-}}
-/* Bouton Guide visible — positionné derrière le checkbox transparent */
-.guide-visual-btn {{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    background: #708090;
-    color: #ffffff !important;
-    border: 1px solid #5a6a78;
-    border-radius: 10px;
-    font-size: .82rem;
-    font-weight: 600;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    padding: .6rem 1rem;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(112,128,144,.25);
-    transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
-    box-sizing: border-box;
-    margin-bottom: 0;
-    text-decoration: none;
-    pointer-events: none;
-    user-select: none;
-}}
-.guide-visual-btn:hover {{
-    background: #5e6e7e;
-    box-shadow: 0 4px 12px rgba(112,128,144,.4);
-    transform: translateY(-1px);
-}}
-</style>
-<div class="guide-visual-btn">
-    &#128214;&nbsp; Guide d&rsquo;int&eacute;gration des donn&eacute;es
-</div>
-""", unsafe_allow_html=True)
 
         if raw_df is not None:
             st.markdown(

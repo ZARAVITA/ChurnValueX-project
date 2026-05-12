@@ -409,6 +409,7 @@ input, select, textarea {{
 ════════════════════════════════════════════════════ */
 
 /* Primary buttons — portée globale SAUF sidebar .guide-btn-wrap */
+/* Primary buttons — règle globale avec !important */
 .stButton > button {{
     background: {t['accent_blue']} !important;
     color: #ffffff !important;
@@ -421,21 +422,35 @@ input, select, textarea {{
 }}
 .stButton > button:hover {{ opacity: 0.88 !important; }}
 
-/* ── GUIDE BUTTON OVERRIDE — doit être placé APRÈS la règle globale ci-dessus ── */
-section[data-testid="stSidebar"] .guide-btn-wrap .stButton > button,
-section[data-testid="stSidebar"] .guide-btn-wrap .stButton > button:focus,
-section[data-testid="stSidebar"] .guide-btn-wrap .stButton > button:active {{
+/* ── BOUTONS SIDEBAR PRIMAIRES (Lancer) — data-testid="baseButton-primary" ──
+   Streamlit génère ce data-testid quand type="primary" est passé à st.button.  */
+section[data-testid="stSidebar"] button[data-testid="baseButton-primary"] {{
+    background:    #1E40AF !important;
+    color:         #000000 !important;
+    border:        none !important;
+    border-radius: 12px !important;
+    font-weight:   700 !important;
+    box-shadow:    0 4px 14px rgba(30,64,175,.35) !important;
+    opacity:       1 !important;
+}}
+section[data-testid="stSidebar"] button[data-testid="baseButton-primary"]:hover {{
+    box-shadow: 0 6px 20px rgba(30,64,175,.55) !important;
+    transform:  translateY(-1px) !important;
+    opacity:    1 !important;
+}}
+
+/* ── BOUTON GUIDE — data-testid="baseButton-secondary" (type par défaut) ── */
+section[data-testid="stSidebar"] button[data-testid="baseButton-secondary"] {{
     background:       #708090 !important;
     background-color: #708090 !important;
     color:            #ffffff !important;
     border:           1px solid #5a6a78 !important;
     border-radius:    10px !important;
     font-weight:      600 !important;
-    padding:          .6rem 1rem !important;
     box-shadow:       0 2px 8px rgba(112,128,144,.25) !important;
     opacity:          1 !important;
 }}
-section[data-testid="stSidebar"] .guide-btn-wrap .stButton > button:hover {{
+section[data-testid="stSidebar"] button[data-testid="baseButton-secondary"]:hover {{
     background:       #5e6e7e !important;
     background-color: #5e6e7e !important;
     color:            #ffffff !important;
