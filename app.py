@@ -433,7 +433,7 @@ if st.session_state.get("pipeline_key") != _raw_key:
         my_bar = st.progress(0, text="Initializing ChurnIQ AI Engine...")
         try:
             for pct in range(100):
-                time.sleep(0.03)
+                time.sleep(0.01)
                 if pct < 30:   _txt = "Analyzing customer behavior..."
                 elif pct < 60: _txt = "Computing churn probabilities..."
                 elif pct < 90: _txt = "Generating AI insights..."

@@ -23,13 +23,12 @@ html, body {{
 .block-container {{ padding: 1.8rem 2.5rem 3rem; max-width: 1380px; }}
 
 /* ════════════════════════════════════════════════════
-   SIDEBAR — full override (all text, widgets, labels)
+   SIDEBAR
 ════════════════════════════════════════════════════ */
 section[data-testid="stSidebar"] {{
     background-color: {t['bg_sidebar']} !important;
     border-right: 1px solid {t['border']} !important;
 }}
-/* Every text node inside sidebar */
 section[data-testid="stSidebar"] *,
 section[data-testid="stSidebar"] p,
 section[data-testid="stSidebar"] span,
@@ -38,44 +37,38 @@ section[data-testid="stSidebar"] label,
 section[data-testid="stSidebar"] small {{
     color: {t['text_primary']} !important;
 }}
-/* Muted / secondary text in sidebar */
 section[data-testid="stSidebar"] [data-testid="stWidgetLabel"] p,
 section[data-testid="stSidebar"] .stMarkdown p,
 section[data-testid="stSidebar"] .stMarkdown li {{
     color: {t['text_secondary']} !important;
 }}
-/* Sidebar toggle label */
 section[data-testid="stSidebar"] [data-testid="stToggle"] span {{
     color: {t['text_primary']} !important;
 }}
-/* Sidebar radio / selectbox labels */
 section[data-testid="stSidebar"] .stRadio label,
 section[data-testid="stSidebar"] .stSelectbox label {{
     color: {t['text_secondary']} !important;
 }}
-/* Expander header */
 section[data-testid="stSidebar"] details summary p,
 section[data-testid="stSidebar"] details summary span,
 section[data-testid="stSidebar"] [data-testid="stExpander"] summary *  {{
     color: {t['text_primary']} !important;
 }}
-/* Expander body */
 section[data-testid="stSidebar"] details[open] > div *,
 section[data-testid="stSidebar"] [data-testid="stExpander"] > div * {{
     color: {t['text_secondary']} !important;
     background-color: transparent !important;
 }}
-/* Expander container background */
 section[data-testid="stSidebar"] [data-testid="stExpander"] {{
     background: {t['bg_card2']} !important;
     border: 1px solid {t['border']} !important;
     border-radius: 10px !important;
 }}
-/* Divider */
 section[data-testid="stSidebar"] hr {{
     border-color: {t['border']} !important;
 }}
-/* Sidebar button */
+
+/* Sidebar buttons — default */
 section[data-testid="stSidebar"] .stButton > button {{
     background: {t['accent_blue']} !important;
     color: #fff !important;
@@ -83,7 +76,6 @@ section[data-testid="stSidebar"] .stButton > button {{
     border-radius: 10px !important;
     font-weight: 600 !important;
 }}
-/* Success / info banners in sidebar */
 section[data-testid="stSidebar"] [data-testid="stAlert"] *,
 section[data-testid="stSidebar"] .stSuccess *,
 section[data-testid="stSidebar"] .stInfo * {{
@@ -91,35 +83,29 @@ section[data-testid="stSidebar"] .stInfo * {{
 }}
 
 /* ════════════════════════════════════════════════════
-   MAIN CONTENT — global text nodes
+   MAIN CONTENT
 ════════════════════════════════════════════════════ */
-/* Markdown text */
 .stMarkdown p, .stMarkdown li, .stMarkdown span {{
     color: {t['text_secondary']} !important;
 }}
-/* Bold inside markdown */
 .stMarkdown strong {{
     color: {t['text_primary']} !important;
 }}
-/* All Streamlit-generated text labels */
 [data-testid="stWidgetLabel"] p,
 [data-testid="stWidgetLabel"] span,
 label[data-testid="stWidgetLabel"] {{
     color: {t['text_secondary']} !important;
     font-size: 0.85rem !important;
 }}
-/* Headings */
 h1, h2, h3, h4 {{
     color: {t['text_primary']} !important;
 }}
-/* Input / select / number_input boxes */
 input, select, textarea {{
     background-color: {t['bg_card']} !important;
     color: {t['text_primary']} !important;
     border: 1px solid {t['border']} !important;
     border-radius: 8px !important;
 }}
-/* Multiselect tags */
 [data-baseweb="tag"] {{
     background-color: {t['accent_blue_bg']} !important;
     color: {t['accent_blue']} !important;
@@ -127,12 +113,10 @@ input, select, textarea {{
 [data-baseweb="tag"] span {{
     color: {t['accent_blue']} !important;
 }}
-/* Slider track and thumb labels */
 [data-testid="stSlider"] p,
 [data-testid="stSlider"] span {{
     color: {t['text_secondary']} !important;
 }}
-/* Selectbox dropdown */
 [data-baseweb="select"] div {{
     background-color: {t['bg_card']} !important;
     color: {t['text_primary']} !important;
@@ -143,7 +127,6 @@ input, select, textarea {{
     background-color: {t['bg_card']} !important;
     color: {t['text_primary']} !important;
 }}
-/* Number input */
 [data-testid="stNumberInput"] input {{
     background-color: {t['bg_card']} !important;
     color: {t['text_primary']} !important;
@@ -151,7 +134,7 @@ input, select, textarea {{
 }}
 
 /* ════════════════════════════════════════════════════
-   TABS  ← FIXED: clear separations between tabs
+   TABS
 ════════════════════════════════════════════════════ */
 .stTabs [data-baseweb="tab-list"] {{
     gap: 4px;
@@ -172,7 +155,6 @@ input, select, textarea {{
     transition: all 0.18s ease;
     position: relative;
 }}
-/* Separator pipe between inactive tabs */
 .stTabs [data-baseweb="tab"]:not(:last-child)::after {{
     content: '';
     position: absolute;
@@ -185,17 +167,14 @@ input, select, textarea {{
     opacity: 0.7;
     pointer-events: none;
 }}
-/* Hide separator adjacent to the active tab */
 .stTabs [aria-selected="true"]::after {{
     opacity: 0 !important;
 }}
-/* Hover state for inactive tabs */
 .stTabs [data-baseweb="tab"]:hover:not([aria-selected="true"]) {{
     background: {t['bg_card']} !important;
     border-color: {t['border']} !important;
     color: {t['text_primary']} !important;
 }}
-/* Active tab */
 .stTabs [aria-selected="true"] {{
     background: {t['tab_active_bg']} !important;
     color: {t['accent_blue']} !important;
@@ -377,7 +356,7 @@ input, select, textarea {{
 .about-card p  {{ font-size:0.82rem; color:{t['text_secondary']} !important; line-height:1.65; }}
 
 /* ════════════════════════════════════════════════════
-   DATA TABLE (sidebar column docs)
+   DATA TABLE
 ════════════════════════════════════════════════════ */
 .col-table {{ width:100%; border-collapse:collapse; font-size:0.82rem; }}
 .col-table th {{
@@ -428,7 +407,8 @@ input, select, textarea {{
 /* ════════════════════════════════════════════════════
    STREAMLIT NATIVE WIDGET OVERRIDES
 ════════════════════════════════════════════════════ */
-/* Primary buttons */
+
+/* Primary buttons — portée globale SAUF sidebar .guide-btn-wrap */
 .stButton > button {{
     background: {t['accent_blue']} !important;
     color: #ffffff !important;
@@ -440,6 +420,30 @@ input, select, textarea {{
     transition: opacity 0.2s;
 }}
 .stButton > button:hover {{ opacity: 0.88 !important; }}
+
+/* ── GUIDE BUTTON OVERRIDE — doit être placé APRÈS la règle globale ci-dessus ── */
+section[data-testid="stSidebar"] .guide-btn-wrap .stButton > button,
+section[data-testid="stSidebar"] .guide-btn-wrap .stButton > button:focus,
+section[data-testid="stSidebar"] .guide-btn-wrap .stButton > button:active {{
+    background:       #708090 !important;
+    background-color: #708090 !important;
+    color:            #ffffff !important;
+    border:           1px solid #5a6a78 !important;
+    border-radius:    10px !important;
+    font-weight:      600 !important;
+    padding:          .6rem 1rem !important;
+    box-shadow:       0 2px 8px rgba(112,128,144,.25) !important;
+    opacity:          1 !important;
+}}
+section[data-testid="stSidebar"] .guide-btn-wrap .stButton > button:hover {{
+    background:       #5e6e7e !important;
+    background-color: #5e6e7e !important;
+    color:            #ffffff !important;
+    border-color:     #4a5a68 !important;
+    box-shadow:       0 4px 12px rgba(112,128,144,.4) !important;
+    transform:        translateY(-1px) !important;
+    opacity:          1 !important;
+}}
 
 /* Download buttons */
 [data-testid="stDownloadButton"] > button {{

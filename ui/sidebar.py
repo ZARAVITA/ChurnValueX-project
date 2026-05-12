@@ -5,11 +5,12 @@ import streamlit as st
 import pandas as pd
 from config.theme import LIGHT, DARK
 
+
 def _sidebar_extra_css(t):
     return f"""
 <style>
 section[data-testid="stSidebar"] {{
-    background: linear-gradient(180deg, {t['bg_sidebar']} 0%, {t['bg_card2']} 100%) !important;
+    background: linear-gradient(180deg, {t.get('bg_sidebar_top', t['bg_sidebar'])} 0%, {t['bg_card2']} 100%) !important;
     border-right: 1px solid {t['border']} !important;
     padding-top: 0 !important;
 }}
@@ -39,8 +40,6 @@ section[data-testid="stSidebar"] .dark-toggle-wrap .stButton > button:hover {{
     margin-bottom:.2rem;display:block;
 }}
 .sb-section-sub {{ font-size:.72rem;color:{t['text_muted']};line-height:1.5;margin-bottom:.75rem;display:block; }}
-
-/* ── Boutons principaux (Lancer simulation / Lancer analyse) ── */
 section[data-testid="stSidebar"] .launch-btn-wrap .stButton > button,
 section[data-testid="stSidebar"] .launch-upload-btn-wrap .stButton > button {{
     background: #1E40AF !important;
@@ -61,31 +60,8 @@ section[data-testid="stSidebar"] .launch-upload-btn-wrap .stButton > button:hove
     transform: translateY(-1px) !important;
     opacity: 1 !important;
 }}
-
-/* ── Bouton Guide (Gris Ardoise) ── */
-section[data-testid="stSidebar"] .guide-btn-wrap .stButton > button {{
-    background: #1E293B !important;
-    color: #ffffff !important;
-    border: 1px solid #334155 !important;
-    border-radius: 10px !important;
-    font-size: .8rem !important;
-    font-weight: 600 !important;
-    padding: .55rem .9rem !important;
-    width: 100% !important;
-    transition: all .18s ease !important;
-    text-align: left !important;
-}}
-section[data-testid="stSidebar"] .guide-btn-wrap .stButton > button:hover {{
-    background: #273449 !important;
-    border-color: #475569 !important;
-    color: #e2e8f0 !important;
-    opacity: 1 !important;
-}}
-
 .demo-badge {{ display:flex;align-items:center;gap:5px;font-size:.68rem;color:{t['text_muted']};margin-top:.35rem;font-family:'DM Mono',monospace;letter-spacing:.02em; }}
 .demo-dot {{ width:4px;height:4px;border-radius:50%;background:{t['accent_blue']};opacity:.55;flex-shrink:0;display:inline-block; }}
-
-/* ── Zone upload ── */
 section[data-testid="stSidebar"] [data-testid="stFileUploader"] {{ border:1.5px dashed {t['border']} !important;border-radius:10px !important;background:{t['bg_card2']} !important; }}
 section[data-testid="stSidebar"] [data-testid="stFileUploader"]:hover {{ border-color:{t['accent_blue']} !important; }}
 section[data-testid="stSidebar"] [data-testid="stFileUploader"] * {{ color:{t['text_secondary']} !important; }}
@@ -93,12 +69,6 @@ section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] {{ backg
 section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] svg {{ display:none !important; }}
 section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] small {{ font-size:.66rem !important; }}
 section[data-testid="stSidebar"] [data-testid="stFileUploader"] button {{ padding:.28rem .8rem !important;font-size:.74rem !important;border-radius:7px !important; }}
-
-/* Label custom au-dessus de la zone upload */
-.upload-row-label {{ font-size:.72rem;font-weight:600;color:{t['text_secondary']} !important;margin-bottom:.3rem;display:flex;align-items:center;gap:5px; }}
-.upload-hint {{ font-size:.62rem;color:{t['text_muted']} !important;font-family:'DM Mono',monospace;letter-spacing:.04em;margin-top:.25rem;margin-bottom:.5rem; }}
-
-/* ── Accordion Paramètres entreprises ── */
 .sb-ent-toggle {{ display:none; }}
 .sb-ent-btn {{ display:flex;align-items:center;justify-content:space-between;width:100%;padding:.6rem .9rem;background:{t['bg_card']} !important;border:1px solid {t['border']};border-radius:10px;cursor:pointer;transition:all .18s ease;font-family:'Plus Jakarta Sans',sans-serif;margin-top:.35rem; }}
 .sb-ent-btn:hover {{ background:{t['accent_blue_bg']} !important;border-color:{t['accent_blue_bd']}; }}
@@ -114,13 +84,12 @@ section[data-testid="stSidebar"] [data-testid="stFileUploader"] button {{ paddin
 .sb-ent-list li::before {{ content:'\u2192';color:{t['accent_blue']} !important;font-weight:700;font-size:.68rem; }}
 .sb-ent-cta {{ font-size:.69rem;color:{t['text_secondary']} !important;line-height:1.55;margin-bottom:.6rem;padding:.5rem .6rem;background:{t['accent_blue_bg']};border:1px solid {t['accent_blue_bd']};border-radius:7px; }}
 .sb-ent-email {{ display:inline-block;font-size:.68rem;font-family:'DM Mono',monospace;color:{t['accent_blue']} !important;text-decoration:none;padding:.28rem .65rem;background:{t['accent_blue_bg']};border:1px solid {t['accent_blue_bd']};border-radius:7px;letter-spacing:.02em; }}
-
-/* ── Statut actif ── */
 .status-active {{ margin-top:.7rem;padding:.6rem .9rem;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.28);border-radius:10px;font-size:.74rem;color:#16A34A;display:flex;align-items:center;gap:8px; }}
 .status-dot {{ width:6px;height:6px;border-radius:50%;background:#22C55E;animation:pulse-green 2s ease-in-out infinite;flex-shrink:0; }}
 @keyframes pulse-green {{ 0%,100%{{opacity:1;transform:scale(1)}} 50%{{opacity:.55;transform:scale(.8)}} }}
 </style>
 """
+
 
 def render_sidebar():
     with st.sidebar:
@@ -147,20 +116,17 @@ def render_sidebar():
             st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-        # Re-read dark_mode after potential toggle
         dark_mode = st.session_state.get("dark_mode", False)
         theme = DARK if dark_mode else LIGHT
         st.markdown(_sidebar_extra_css(theme), unsafe_allow_html=True)
 
         st.divider()
 
-        # ── Section titre ─────────────────────────────────────────────────────
         st.markdown('<span class="sb-section-title">Initialiser l\'analyse client</span>', unsafe_allow_html=True)
         st.markdown('<span class="sb-section-sub">Lancez la démo intégrée ou importez vos propres données.</span>', unsafe_allow_html=True)
 
         raw_df = st.session_state.get("raw_df", None)
 
-        # ── Bouton simulation business ────────────────────────────────────────
         st.markdown('<div class="launch-btn-wrap">', unsafe_allow_html=True)
         if st.button("\u25b6  Lancer une simulation business", use_container_width=True, key="btn_demo"):
             try:
@@ -183,7 +149,6 @@ def render_sidebar():
             '</div>',
             unsafe_allow_html=True)
 
-        # ── Séparateur ────────────────────────────────────────────────────────
         st.markdown(
             f'<div style="display:flex;align-items:center;gap:8px;margin:.75rem 0 .6rem">'
             f'<div style="flex:1;height:1px;background:{theme["border"]};opacity:.6"></div>'
@@ -191,14 +156,11 @@ def render_sidebar():
             f'<div style="flex:1;height:1px;background:{theme["border"]};opacity:.6"></div></div>',
             unsafe_allow_html=True)
 
-        # ── Section import données ────────────────────────────────────────────
         st.markdown(
             f'<div style="font-size:.8rem;font-weight:800;color:#1E40AF;margin-bottom:.3rem">'
             f'Importez vos donn\u00e9es clients/CRM</div>',
             unsafe_allow_html=True)
 
-        # Label custom au-dessus du file uploader (Streamlit impose le texte natif,
-        # on ajoute donc un visuel personnalisé juste au-dessus)
         st.markdown(
             f'<div style="background:{theme["bg_card2"]};border:1.5px dashed {theme["border"]}; '
             f'border-radius:10px 10px 0 0;padding:.55rem .9rem .35rem;'
@@ -211,11 +173,8 @@ def render_sidebar():
             f'</div>',
             unsafe_allow_html=True)
 
-        # File uploader (le texte natif "Drag and drop" reste, mais est masqué visuellement
-        # par la zone custom ci-dessus grâce au border-radius et border-bottom:none)
         uploaded_file = st.file_uploader(
-            "upload",
-            type=["xlsx", "csv"],
+            "upload", type=["xlsx", "csv"],
             help="CSV, Excel \u2022 Jusqu\u2019\u00e0 200 MB",
             label_visibility="collapsed"
         )
@@ -244,7 +203,6 @@ def render_sidebar():
                 st.success(f"\u2713 {len(raw_df):,} clients import\u00e9s")
             st.markdown('</div>', unsafe_allow_html=True)
 
-        # ── Paramètres entreprises (accordion) ───────────────────────────────
         st.markdown(
             '<div class="sb-ent-wrap">'
             '<input type="checkbox" class="sb-ent-toggle" id="sb_ent_acc">'
@@ -269,18 +227,72 @@ def render_sidebar():
 
         st.divider()
 
-        # ── Bouton Guide d'intégration des données ────────────────────────────
-        st.markdown('<div class="guide-btn-wrap">', unsafe_allow_html=True)
-        show_guide = st.button(
-            "\U0001f4d6  Guide d\u2019int\u00e9gration des donn\u00e9es",
-            use_container_width=True,
-            key="btn_guide"
-        )
-        st.markdown('</div>', unsafe_allow_html=True)
-        if show_guide:
-            st.session_state["show_data_guide"] = True
+        # ── Bouton Guide — st.checkbox caché + label stylé ────────────────────
+        # APPROCHE RADICALE FINALE : on n'utilise PAS st.button pour le Guide.
+        # On utilise st.checkbox(label_visibility="collapsed") + un <label> HTML
+        # stylé qui agit comme bouton. Le checkbox Streamlit est caché (opacity:0,
+        # position:absolute), le label HTML visible est entièrement sous notre
+        # contrôle CSS — 0 interférence avec styles.py.
+        show_guide = st.session_state.get("show_data_guide", False)
 
-        # ── Statut dataset actif ──────────────────────────────────────────────
+        # Checkbox Streamlit caché — sa valeur déclenche le guide
+        guide_checked = st.checkbox(
+            "guide_trigger",
+            key="guide_checkbox",
+            label_visibility="collapsed"
+        )
+        if guide_checked:
+            st.session_state["show_data_guide"] = True
+            # Reset immédiat pour que le checkbox revienne à False après rerun
+            st.session_state["guide_checkbox"] = False
+
+        # Label HTML stylé superposé sur le checkbox — agit visuellement comme bouton
+        st.markdown(f"""
+<style>
+/* Cache le checkbox Streamlit mais garde son interactivité */
+section[data-testid="stSidebar"] [data-testid="stCheckbox"] {{
+    position: relative !important;
+    height: 44px !important;
+    margin-top: -44px !important;
+    opacity: 0 !important;
+    cursor: pointer !important;
+    z-index: 2 !important;
+    width: 100% !important;
+}}
+/* Bouton Guide visible — positionné derrière le checkbox transparent */
+.guide-visual-btn {{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    background: #708090;
+    color: #ffffff !important;
+    border: 1px solid #5a6a78;
+    border-radius: 10px;
+    font-size: .82rem;
+    font-weight: 600;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    padding: .6rem 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(112,128,144,.25);
+    transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
+    box-sizing: border-box;
+    margin-bottom: 0;
+    text-decoration: none;
+    pointer-events: none;
+    user-select: none;
+}}
+.guide-visual-btn:hover {{
+    background: #5e6e7e;
+    box-shadow: 0 4px 12px rgba(112,128,144,.4);
+    transform: translateY(-1px);
+}}
+</style>
+<div class="guide-visual-btn">
+    &#128214;&nbsp; Guide d&rsquo;int&eacute;gration des donn&eacute;es
+</div>
+""", unsafe_allow_html=True)
+
         if raw_df is not None:
             st.markdown(
                 '<div class="status-active"><div class="status-dot"></div>'
