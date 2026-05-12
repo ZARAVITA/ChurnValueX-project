@@ -14,7 +14,6 @@ section[data-testid="stSidebar"] {{
     border-right: 1px solid {t['border']} !important;
     padding-top: 0 !important;
 }}
-/* Supprimer l'espace natif Streamlit au-dessus du premier élément */
 section[data-testid="stSidebar"] > div {{
     padding-top: 0 !important;
     margin-top: 0 !important;
@@ -23,27 +22,21 @@ section[data-testid="stSidebar"] [data-testid="stSidebarContent"] > div:first-ch
     padding-top: 0.4rem !important;
     margin-top: 0 !important;
 }}
-/* Réduire l'espace entre le header brand et "Initialiser l'analyse" */
 section[data-testid="stSidebar"] hr {{
     margin: 0.3rem 0 !important;
 }}
-section[data-testid="stSidebar"] .sb-brand-cols > div[data-testid="stHorizontalBlock"] {{
-    gap: 0 !important; align-items: flex-start !important;
-}}
-section[data-testid="stSidebar"] .sb-brand-cols [data-testid="column"] {{ padding: 0 !important; }}
-section[data-testid="stSidebar"] .sb-brand-cols [data-testid="stVerticalBlockBorderWrapper"],
-section[data-testid="stSidebar"] .sb-brand-cols .stVerticalBlock {{ gap: 0 !important; padding: 0 !important; }}
-section[data-testid="stSidebar"] .sb-brand-cols .element-container {{ margin: 0 !important; padding: 0 !important; }}
 .sb-brand-name {{ font-size:1.2rem;font-weight:900;letter-spacing:-.03em;line-height:1; }}
 .sb-brand-name .churn {{ color:#E53E3E !important; }}
 .sb-brand-name .iq {{ color:#38B2AC !important; }}
 .sb-brand-sub {{ font-size:.58rem;opacity:.4;font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:{t['text_muted']} !important; }}
+/* Toggle dark/light mode en bas — petit bouton discret */
 section[data-testid="stSidebar"] .dark-toggle-wrap .stButton > button {{
     background:{t['bg_card2']} !important;border:1px solid {t['border']} !important;
-    border-radius:7px !important;width:22px !important;height:22px !important;
-    min-height:0 !important;padding:0 !important;display:flex !important;
+    border-radius:7px !important;width:100% !important;height:32px !important;
+    min-height:0 !important;padding:0 .6rem !important;display:flex !important;
     align-items:center !important;justify-content:center !important;
-    font-size:.65rem !important;line-height:1 !important;color:{t['text_secondary']} !important;
+    font-size:.72rem !important;line-height:1 !important;color:{t['text_secondary']} !important;
+    gap:6px !important;
     transition:all .18s ease !important;
 }}
 section[data-testid="stSidebar"] .dark-toggle-wrap .stButton > button:hover {{
@@ -114,22 +107,13 @@ def render_sidebar():
 
         st.markdown(_sidebar_extra_css(theme), unsafe_allow_html=True)
 
-        # ── Brand header ──────────────────────────────────────────────────────
-        st.markdown('<div class="sb-brand-cols">', unsafe_allow_html=True)
-        _bc, _tc = st.columns([6, 1])
-        with _bc:
-            st.markdown(
-                '<div style="padding:.1rem 0 .1rem">'
-                '<div class="sb-brand-name"><span class="churn">Churn</span><span class="iq">IQ</span></div>'
-                '<div class="sb-brand-sub">Customer Intelligence Platform</div>'
-                '</div>', unsafe_allow_html=True)
-        with _tc:
-            st.markdown('<div class="dark-toggle-wrap" style="padding-top:.15rem">', unsafe_allow_html=True)
-            if st.button(icon, key="dark_toggle", help="Dark / light mode"):
-                st.session_state["dark_mode"] = not dark_mode
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+        # ── Brand header — titre seul, sans toggle ────────────────────────────
+        st.markdown(
+            '<div style="padding:.1rem 0 .15rem">'
+            '<div class="sb-brand-name"><span class="churn">Churn</span><span class="iq">IQ</span></div>'
+            '<div class="sb-brand-sub">Customer Intelligence Platform</div>'
+            '</div>',
+            unsafe_allow_html=True)
 
         dark_mode = st.session_state.get("dark_mode", False)
         theme = DARK if dark_mode else LIGHT
@@ -137,11 +121,13 @@ def render_sidebar():
 
         st.markdown('<hr style="margin:.2rem 0 .5rem;border-color:' + theme['border'] + '">', unsafe_allow_html=True)
 
+        # ── Section titre ─────────────────────────────────────────────────────
         st.markdown('<span class="sb-section-title">Initialiser l\'analyse client</span>', unsafe_allow_html=True)
         st.markdown('<span class="sb-section-sub">Lancez la démo intégrée ou importez vos propres données.</span>', unsafe_allow_html=True)
 
         raw_df = st.session_state.get("raw_df", None)
 
+        # ── Bouton simulation business ────────────────────────────────────────
         st.markdown('<div class="launch-btn-wrap">', unsafe_allow_html=True)
         if st.button("\u25b6  Lancer une simulation business", use_container_width=True, key="btn_demo", type="primary"):
             try:
@@ -164,6 +150,7 @@ def render_sidebar():
             '</div>',
             unsafe_allow_html=True)
 
+        # ── Séparateur ────────────────────────────────────────────────────────
         st.markdown(
             f'<div style="display:flex;align-items:center;gap:8px;margin:.75rem 0 .6rem">'
             f'<div style="flex:1;height:1px;background:{theme["border"]};opacity:.6"></div>'
@@ -171,6 +158,7 @@ def render_sidebar():
             f'<div style="flex:1;height:1px;background:{theme["border"]};opacity:.6"></div></div>',
             unsafe_allow_html=True)
 
+        # ── Import données ────────────────────────────────────────────────────
         st.markdown(
             f'<div style="font-size:.8rem;font-weight:800;color:#1E40AF;margin-bottom:.3rem">'
             f'Importez vos donn\u00e9es clients/CRM</div>',
@@ -218,6 +206,7 @@ def render_sidebar():
                 st.success(f"\u2713 {len(raw_df):,} clients import\u00e9s")
             st.markdown('</div>', unsafe_allow_html=True)
 
+        # ── Paramètres entreprises ────────────────────────────────────────────
         st.markdown(
             '<div class="sb-ent-wrap">'
             '<input type="checkbox" class="sb-ent-toggle" id="sb_ent_acc">'
@@ -243,16 +232,14 @@ def render_sidebar():
         st.divider()
 
         # ── Bouton Guide ──────────────────────────────────────────────────────
-        # st.button normal. La couleur #708090 est gérée dans styles.py via
-        # section[data-testid="stSidebar"] [data-testid="stButton"]:last-child button
-        # qui cible le dernier bouton de la sidebar (toujours le Guide).
         if st.button(
-            "📖  Guide d’intégration des données",
+            "\U0001f4d6  Guide d\u2019int\u00e9gration des donn\u00e9es",
             use_container_width=True,
             key="btn_guide"
         ):
             st.session_state["show_data_guide"] = True
 
+        # ── Statut dataset actif ──────────────────────────────────────────────
         if raw_df is not None:
             st.markdown(
                 '<div class="status-active"><div class="status-dot"></div>'
@@ -260,8 +247,17 @@ def render_sidebar():
                 unsafe_allow_html=True)
 
         st.divider()
+
+        # ── Toggle dark/light — en bas, pleine largeur ────────────────────────
+        mode_label = "\U0001f319  Mode sombre" if not dark_mode else "\u2600\ufe0f  Mode clair"
+        st.markdown('<div class="dark-toggle-wrap">', unsafe_allow_html=True)
+        if st.button(mode_label, use_container_width=True, key="dark_toggle"):
+            st.session_state["dark_mode"] = not dark_mode
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+
         st.markdown(
-            '<div style="font-size:.62rem;opacity:.28;font-family:\'DM Mono\',monospace;line-height:1.9">'
+            '<div style="font-size:.62rem;opacity:.28;font-family:\'DM Mono\',monospace;line-height:1.9;margin-top:.5rem">'
             'ZARA VITA<br>Smart Automation Technologies<br>zaravitamds18@gmail.com</div>',
             unsafe_allow_html=True)
 
