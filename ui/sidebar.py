@@ -29,19 +29,31 @@ section[data-testid="stSidebar"] hr {{
 .sb-brand-name .churn {{ color:#E53E3E !important; }}
 .sb-brand-name .iq {{ color:#38B2AC !important; }}
 .sb-brand-sub {{ font-size:.58rem;opacity:.4;font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:{t['text_muted']} !important; }}
-/* Toggle dark/light mode en bas — petit bouton discret */
-section[data-testid="stSidebar"] .dark-toggle-wrap .stButton > button {{
-    background:{t['bg_card2']} !important;border:1px solid {t['border']} !important;
-    border-radius:7px !important;width:100% !important;height:32px !important;
-    min-height:0 !important;padding:0 .6rem !important;display:flex !important;
-    align-items:center !important;justify-content:center !important;
-    font-size:.72rem !important;line-height:1 !important;color:{t['text_secondary']} !important;
-    gap:6px !important;
-    transition:all .18s ease !important;
+
+/* ── Toggle bouton rond icône ── */
+.theme-icon-btn .stButton > button {{
+    background: {t['bg_card2']} !important;
+    border: 1px solid {t['border']} !important;
+    border-radius: 50% !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    font-size: 1rem !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all .18s ease !important;
+    box-shadow: none !important;
 }}
-section[data-testid="stSidebar"] .dark-toggle-wrap .stButton > button:hover {{
-    background:{t['accent_blue_bg']} !important;border-color:{t['accent_blue_bd']} !important;opacity:1 !important;
+.theme-icon-btn .stButton > button:hover {{
+    background: {t['accent_blue_bg']} !important;
+    border-color: {t['accent_blue_bd']} !important;
+    transform: scale(1.12) !important;
+    opacity: 1 !important;
 }}
+
 .sb-section-title {{
     font-size:.82rem;font-weight:800;letter-spacing:-.01em;
     color:#1E40AF !important;
@@ -101,23 +113,18 @@ section[data-testid="stSidebar"] [data-testid="stFileUploader"] button {{ paddin
 
 def render_sidebar():
     with st.sidebar:
-        dark_mode = st.session_state.get("dark_mode", False)
+        dark_mode = st.session_state.get("dark_mode", True)
         theme = DARK if dark_mode else LIGHT
-        icon = "\U0001f319" if not dark_mode else "\u2600\ufe0f"
 
         st.markdown(_sidebar_extra_css(theme), unsafe_allow_html=True)
 
-        # ── Brand header — titre seul, sans toggle ────────────────────────────
+        # ── Brand header ──────────────────────────────────────────────────────
         st.markdown(
             '<div style="padding:.1rem 0 .15rem">'
             '<div class="sb-brand-name"><span class="churn">Churn</span><span class="iq">IQ</span></div>'
             '<div class="sb-brand-sub">Customer Intelligence Platform</div>'
             '</div>',
             unsafe_allow_html=True)
-
-        dark_mode = st.session_state.get("dark_mode", False)
-        theme = DARK if dark_mode else LIGHT
-        st.markdown(_sidebar_extra_css(theme), unsafe_allow_html=True)
 
         st.markdown('<hr style="margin:.2rem 0 .5rem;border-color:' + theme['border'] + '">', unsafe_allow_html=True)
 
@@ -248,13 +255,25 @@ def render_sidebar():
 
         st.divider()
 
-        # ── Toggle dark/light — en bas, pleine largeur ────────────────────────
-        mode_label = "\U0001f319  Mode sombre" if not dark_mode else "\u2600\ufe0f  Mode clair"
-        st.markdown('<div class="dark-toggle-wrap">', unsafe_allow_html=True)
-        if st.button(mode_label, use_container_width=True, key="dark_toggle"):
-            st.session_state["dark_mode"] = not dark_mode
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
+        # ── Toggle dark/light — petit bouton icône rond en bas ────────────────
+        icon_btn = "🌙" if not dark_mode else "☀️"
+        mode_label = "Mode sombre" if not dark_mode else "Mode clair"
+
+        col_icon, col_lbl = st.columns([1, 4])
+        with col_icon:
+            st.markdown('<div class="theme-icon-btn">', unsafe_allow_html=True)
+            if st.button(icon_btn, key="dark_toggle"):
+                st.session_state["dark_mode"] = not dark_mode
+                st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
+        with col_lbl:
+            st.markdown(
+                f'<div style="display:flex;align-items:center;height:34px;">'
+                f'<span style="font-size:.72rem;color:{theme["text_muted"]};'
+                f'font-family:\'DM Mono\',monospace;letter-spacing:.04em;">'
+                f'{mode_label}</span></div>',
+                unsafe_allow_html=True
+            )
 
         st.markdown(
             '<div style="font-size:.62rem;opacity:.28;font-family:\'DM Mono\',monospace;line-height:1.9;margin-top:.5rem">'
