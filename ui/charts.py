@@ -24,14 +24,35 @@ def _layout(t: dict, legend_extra=None) -> dict:
     legend = dict(**_LEGEND_BASE)
     if legend_extra:
         legend.update(legend_extra)
+
+    dark = _is_dark(t)
+    if dark:
+        plot_bg  = "rgba(255,255,255,0.04)"   # voile blanc très léger — distinct du fond page
+        grid_col = "rgba(255,255,255,0.08)"
+        axis_col = "rgba(255,255,255,0.12)"
+        font_col = "#CBD5E1"                  # texte axes plus lisible
+        legend.setdefault("bgcolor",      "rgba(13,20,32,0.82)")
+        legend.setdefault("bordercolor",  "rgba(255,255,255,0.12)")
+        legend.setdefault("borderwidth",  1)
+        legend["font"] = dict(color="#F1F5F9", size=12)
+    else:
+        plot_bg  = t["plotly_plot"]
+        grid_col = t["plotly_grid"]
+        axis_col = t["plotly_grid"]
+        font_col = t["plotly_font"]
+
     return dict(
         paper_bgcolor=t["plotly_paper"],
-        plot_bgcolor =t["plotly_plot"],
-        font=dict(family="Plus Jakarta Sans, sans-serif", color=t["plotly_font"], size=12),
-        xaxis=dict(gridcolor=t["plotly_grid"], zerolinecolor=t["plotly_grid"],
-                   linecolor=t["plotly_grid"]),
-        yaxis=dict(gridcolor=t["plotly_grid"], zerolinecolor=t["plotly_grid"],
-                   linecolor=t["plotly_grid"]),
+        plot_bgcolor =plot_bg,
+        font=dict(family="Plus Jakarta Sans, sans-serif", color=font_col, size=12),
+        xaxis=dict(
+            gridcolor=grid_col, zerolinecolor=grid_col, linecolor=axis_col,
+            tickfont=dict(color=font_col), title_font=dict(color=font_col),
+        ),
+        yaxis=dict(
+            gridcolor=grid_col, zerolinecolor=grid_col, linecolor=axis_col,
+            tickfont=dict(color=font_col), title_font=dict(color=font_col),
+        ),
         legend=legend,
         margin=dict(l=10, r=10, t=35, b=10),
     )
@@ -207,6 +228,7 @@ def fig_risk_hist(df: pd.DataFrame, t: dict) -> go.Figure:
 
 def fig_seg_pie(df: pd.DataFrame, t: dict) -> go.Figure:
     sc = _seg_colors(t)
+    dark = _is_dark(t)
     counts = df["Matrix_Segment"].value_counts().reset_index()
     counts.columns = ["Segment", "Count"]
     fig = px.pie(counts, names="Segment", values="Count",
@@ -215,7 +237,14 @@ def fig_seg_pie(df: pd.DataFrame, t: dict) -> go.Figure:
         **_layout(t, legend_extra=dict(orientation="h", yanchor="top", y=-0.05)),
         height=280,
     )
-    fig.update_traces(textposition="inside", textinfo="percent+label")
+    # Surcharge séparée — paper_bgcolor est déjà dans _layout(), on l'écrase ici
+    if dark:
+        fig.update_layout(paper_bgcolor="rgba(255,255,255,0.04)")
+    fig.update_traces(
+        textposition="inside",
+        textinfo="percent+label",
+        textfont=dict(color="#F1F5F9" if dark else "#0F172A"),
+    )
     return fig
 
 

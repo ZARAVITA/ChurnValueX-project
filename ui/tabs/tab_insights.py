@@ -6,7 +6,45 @@ import streamlit as st
 import numpy as np
 
 
+# Couleurs des stats selon le mode et l'index de la carte
+_STAT_COLORS_DARK  = ["#F87171", "#FBBF24", "#60A5FA"]   # rouge, amber, bleu
+_STAT_COLORS_LIGHT = ["#DC2626", "#D97706", "#2563EB"]
+
+# Fonds des 3 cartes — dégradé progressif
+_CARD_BG_DARK  = [
+    ("rgba(239,68,68,0.08)",   "rgba(239,68,68,0.22)"),    # rouge discret
+    ("rgba(245,158,11,0.08)",  "rgba(245,158,11,0.22)"),   # amber discret
+    ("rgba(59,130,246,0.08)",  "rgba(59,130,246,0.22)"),   # bleu discret
+]
+_CARD_BG_LIGHT = [
+    ("rgba(239,68,68,0.06)",   "rgba(239,68,68,0.14)"),
+    ("rgba(245,158,11,0.06)",  "rgba(245,158,11,0.14)"),
+    ("rgba(59,130,246,0.06)",  "rgba(59,130,246,0.14)"),
+]
+_CARD_BD_DARK  = [
+    "rgba(239,68,68,0.30)",
+    "rgba(245,158,11,0.30)",
+    "rgba(59,130,246,0.30)",
+]
+_CARD_BD_LIGHT = [
+    "rgba(239,68,68,0.22)",
+    "rgba(245,158,11,0.22)",
+    "rgba(59,130,246,0.22)",
+]
+_CARD_LEFT_DARK  = ["#EF4444", "#F59E0B", "#3B82F6"]
+_CARD_LEFT_LIGHT = ["#DC2626", "#D97706", "#2563EB"]
+
+
 def render(df, t):
+    dark = t.get("bg_main", "#fff").startswith("#0") or t.get("bg_main", "#fff").startswith("#1")
+
+    stat_colors  = _STAT_COLORS_DARK  if dark else _STAT_COLORS_LIGHT
+    card_bgs     = _CARD_BG_DARK      if dark else _CARD_BG_LIGHT
+    card_bds     = _CARD_BD_DARK      if dark else _CARD_BD_LIGHT
+    card_lefts   = _CARD_LEFT_DARK    if dark else _CARD_LEFT_LIGHT
+    text_col     = t["text_secondary"]
+    text_primary = t["text_primary"]
+
     total     = len(df)
     total_rev = df["CLV_12mois"].sum()
 
@@ -43,11 +81,39 @@ def render(df, t):
         ),
     ]
 
-    for stat, text in insights:
+    for i, (stat, text) in enumerate(insights):
+        bg_a, bg_b = card_bgs[i]
+        bd         = card_bds[i]
+        left_col   = card_lefts[i]
+        stat_col   = stat_colors[i]
+
         st.markdown(f"""
-<div class="insight-card">
-    <span class="insight-stat">{stat}</span>
-    <span class="insight-text">{text}</span>
+<div style="
+    background: linear-gradient(135deg, {bg_a} 0%, {bg_b} 100%);
+    border: 1px solid {bd};
+    border-left: 3px solid {left_col};
+    border-radius: 14px;
+    padding: 1.3rem 1.6rem;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+">
+    <span style="
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1;
+        color: {stat_col};
+        flex-shrink: 0;
+        min-width: 80px;
+        padding-top: 0.1rem;
+    ">{stat}</span>
+    <span style="
+        font-size: 0.9rem;
+        color: {text_col};
+        line-height: 1.65;
+    ">{text}</span>
 </div>""", unsafe_allow_html=True)
 
     # ── Simulation ────────────────────────────────────────────────────────────
@@ -55,8 +121,8 @@ def render(df, t):
     st.markdown('<div class="sec-label">Simulation stratégique</div>', unsafe_allow_html=True)
     st.markdown('<div class="sec-title">Analyse What-If</div>', unsafe_allow_html=True)
 
-    st.markdown("""
-<p style="font-size:0.88rem;color:#64748B;margin-bottom:1rem;max-width:680px">
+    st.markdown(f"""
+<p style="font-size:0.88rem;color:{text_col};margin-bottom:1rem;max-width:680px">
 Simulez l'impact financier d'une réduction du taux de churn sur les clients PRIORITY.
 Ajustez le curseur pour voir les revenus récupérables selon l'efficacité de vos actions de rétention.
 </p>

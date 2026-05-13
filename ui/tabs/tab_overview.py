@@ -14,8 +14,8 @@ def render(df, t):
     <div class="hero-badge">⬡ Enterprise Analytics Platform</div>
     <div class="hero-title">Customer Churn<br><span>Intelligence System</span></div>
     <div class="hero-subtitle">
-        Identify which customers are at risk, how much revenue is exposed,
-        and what actions to take — all in one unified decision layer.
+        Identifiez quels clients sont à risque, quel montant de revenus est exposé, 
+        et quelles actions entreprendre  -  le tout dans une couche de décision unifiée.
     </div>
 </div>
 """, unsafe_allow_html=True)
