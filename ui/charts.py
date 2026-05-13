@@ -12,6 +12,13 @@ from config.theme import SEG_COLORS_LIGHT, SEG_COLORS_DARK
 _LEGEND_BASE = dict(bgcolor="rgba(0,0,0,0)", bordercolor="rgba(0,0,0,0)")
 
 
+def _is_dark(t: dict) -> bool:
+    """Detect dark mode from background color."""
+    bg = t.get("bg_main", "#ffffff")
+    # Dark mode backgrounds start with #0 or are very dark
+    return bg.startswith("#0") or bg.startswith("#1")
+
+
 def _layout(t: dict, legend_extra=None) -> dict:
     """Base layout dict. legend_extra dict is merged into the legend."""
     legend = dict(**_LEGEND_BASE)
@@ -31,13 +38,34 @@ def _layout(t: dict, legend_extra=None) -> dict:
 
 
 def _seg_colors(t: dict) -> dict:
-    return SEG_COLORS_DARK if t.get("bg_main", "").startswith("#0") else SEG_COLORS_LIGHT
+    return SEG_COLORS_DARK if _is_dark(t) else SEG_COLORS_LIGHT
 
 
 # ── Decision Matrix ───────────────────────────────────────────────────────────
 
 def fig_decision_matrix(df: pd.DataFrame, t: dict) -> go.Figure:
     sc = _seg_colors(t)
+    dark = _is_dark(t)
+
+    # Fond légèrement différent du bg_main en mode sombre
+    if dark:
+        plot_bg   = "rgba(255,255,255,0.04)"   # voile blanc très léger
+        paper_bg  = "rgba(255,255,255,0.0)"
+        grid_col  = "rgba(255,255,255,0.08)"
+        axis_col  = "rgba(255,255,255,0.12)"
+        font_col  = "#CBD5E1"                  # texte axes + légende plus clair
+        # Légende avec fond semi-transparent pour lisibilité
+        legend_bg = "rgba(13, 20, 32, 0.82)"
+        legend_bd = "rgba(255,255,255,0.12)"
+    else:
+        plot_bg   = "rgba(255,255,255,0)"
+        paper_bg  = "rgba(255,255,255,0)"
+        grid_col  = t["plotly_grid"]
+        axis_col  = t["plotly_grid"]
+        font_col  = t["plotly_font"]
+        legend_bg = "rgba(255,255,255,0.92)"
+        legend_bd = "rgba(0,0,0,0.08)"
+
     fig = px.scatter(
         df, x="CLV_12mois", y="Churn_proba",
         color="Matrix_Segment",
@@ -45,17 +73,77 @@ def fig_decision_matrix(df: pd.DataFrame, t: dict) -> go.Figure:
         hover_data={"CustomerID": True, "CLV_12mois": ":.1f",
                     "Churn_proba": ":.1%", "Matrix_Segment": True},
         labels={"CLV_12mois": "Customer Lifetime Value (12M)", "Churn_proba": "Churn Risk"},
-        opacity=0.72,
+        opacity=0.75,
     )
+
     clv_med = df["CLV_12mois"].median()
-    fig.add_hline(y=0.5,     line=dict(color="rgba(128,128,128,0.3)", dash="dot", width=1.5))
-    fig.add_vline(x=clv_med, line=dict(color="rgba(128,128,128,0.3)", dash="dot", width=1.5))
-    fig.update_traces(marker=dict(size=7))
+    fig.add_hline(y=0.5,     line=dict(color="rgba(148,163,184,0.35)", dash="dot", width=1.5))
+    fig.add_vline(x=clv_med, line=dict(color="rgba(148,163,184,0.35)", dash="dot", width=1.5))
+
+    fig.update_traces(marker=dict(size=7, line=dict(width=0)))
+
     fig.update_layout(
-        **_layout(t, legend_extra=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)),
-        height=430,
-        yaxis_tickformat=".0%",
+        paper_bgcolor=paper_bg,
+        plot_bgcolor =plot_bg,
+        font=dict(family="Plus Jakarta Sans, sans-serif", color=font_col, size=12),
+        xaxis=dict(
+            gridcolor=grid_col,
+            zerolinecolor=grid_col,
+            linecolor=axis_col,
+            tickfont=dict(color=font_col),
+            title_font=dict(color=font_col),
+        ),
+        yaxis=dict(
+            gridcolor=grid_col,
+            zerolinecolor=grid_col,
+            linecolor=axis_col,
+            tickfont=dict(color=font_col),
+            title_font=dict(color=font_col),
+            tickformat=".0%",
+        ),
+        legend=dict(
+            bgcolor=legend_bg,
+            bordercolor=legend_bd,
+            borderwidth=1,
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
+            font=dict(
+                color="#F1F5F9" if dark else "#0F172A",
+                size=12,
+            ),
+            title=dict(
+                text="Segment  ",
+                font=dict(color="#94A3B8" if dark else "#475569", size=11),
+            ),
+            itemsizing="constant",
+        ),
+        height=440,
+        margin=dict(l=10, r=10, t=50, b=10),
     )
+
+    # Quadrant labels semi-transparents
+    clv_max = df["CLV_12mois"].quantile(0.98)
+    label_color = "rgba(203,213,225,0.45)" if dark else "rgba(71,85,105,0.3)"
+    label_size  = 11
+
+    for (x_pos, y_pos, txt) in [
+        (clv_med * 0.3,  0.75, "OPTIMIZE"),
+        (clv_med * 0.3,  0.25, "AUTOMATE"),
+        (clv_med + (clv_max - clv_med) * 0.4, 0.75, "PRIORITY"),
+        (clv_med + (clv_max - clv_med) * 0.4, 0.25, "PROTECT"),
+    ]:
+        fig.add_annotation(
+            x=x_pos, y=y_pos,
+            text=txt,
+            showarrow=False,
+            font=dict(size=label_size, color=label_color,
+                      family="DM Mono, monospace"),
+            opacity=0.6,
+        )
+
     return fig
 
 
