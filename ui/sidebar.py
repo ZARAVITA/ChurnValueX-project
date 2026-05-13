@@ -259,21 +259,49 @@ def render_sidebar():
         icon_btn = "🌙" if not dark_mode else "☀️"
         mode_label = "Mode sombre" if not dark_mode else "Mode clair"
 
-        col_icon, col_lbl = st.columns([1, 4])
-        with col_icon:
-            st.markdown('<div class="theme-icon-btn">', unsafe_allow_html=True)
-            if st.button(icon_btn, key="dark_toggle"):
-                st.session_state["dark_mode"] = not dark_mode
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
-        with col_lbl:
-            st.markdown(
-                f'<div style="display:flex;align-items:center;height:34px;">'
-                f'<span style="font-size:.72rem;color:{theme["text_muted"]};'
-                f'font-family:\'DM Mono\',monospace;letter-spacing:.04em;">'
-                f'{mode_label}</span></div>',
-                unsafe_allow_html=True
-            )
+        # Bouton icone + label sur la meme ligne - approche position relative
+        st.markdown(f"""
+<style>
+section[data-testid="stSidebar"] .theme-toggle-wrap {{
+    position: relative;
+    height: 34px;
+    margin: .2rem 0 .6rem;
+}}
+section[data-testid="stSidebar"] .theme-toggle-wrap .theme-icon-btn {{
+    position: absolute;
+    left: 0;
+    top: 0;
+}}
+section[data-testid="stSidebar"] .theme-toggle-wrap .theme-icon-btn .stButton {{
+    margin: 0 !important;
+    padding: 0 !important;
+}}
+section[data-testid="stSidebar"] .theme-toggle-wrap .stButton > button {{
+    margin: 0 !important;
+}}
+section[data-testid="stSidebar"] .theme-toggle-wrap .toggle-label {{
+    position: absolute;
+    left: 44px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: .72rem;
+    color: {theme["text_muted"]};
+    font-family: 'DM Mono', monospace;
+    letter-spacing: .04em;
+    line-height: 1;
+    white-space: nowrap;
+    pointer-events: none;
+}}
+</style>
+<div class="theme-toggle-wrap">
+    <span class="toggle-label">{mode_label}</span>
+</div>
+""", unsafe_allow_html=True)
+        st.markdown('<div class="theme-icon-btn" style="margin-top:-2.45rem;margin-bottom:.6rem;">', unsafe_allow_html=True)
+        if st.button(icon_btn, key="dark_toggle"):
+            st.session_state["dark_mode"] = not dark_mode
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
         st.markdown(
             '<div style="font-size:.62rem;opacity:.28;font-family:\'DM Mono\',monospace;line-height:1.9;margin-top:.5rem">'
