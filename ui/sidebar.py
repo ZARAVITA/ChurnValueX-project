@@ -496,7 +496,6 @@ section[data-testid="stSidebar"] .launch-btn-wrap .stButton > button[disabled] {
                 st.session_state["raw_df"]       = raw_df
                 st.session_state["pipeline_key"] = None
                 st.session_state.pop("uploaded_df", None)
-                st.success(f"\u2713 {len(raw_df):,} clients import\u00e9s")
         st.markdown('</div>', unsafe_allow_html=True)
 
         # ── Statut dataset actif ──────────────────────────────────────────────
