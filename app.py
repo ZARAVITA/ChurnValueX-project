@@ -14,7 +14,7 @@ if "dark_mode" not in st.session_state:
     st.session_state["dark_mode"] = True
 
 st.set_page_config(
-    page_title="ChurnIQ — Customer Intelligence",
+    page_title="ChurnIQ - Customer Intelligence System",
     layout="wide",
     initial_sidebar_state="expanded",
     page_icon="⬡",
