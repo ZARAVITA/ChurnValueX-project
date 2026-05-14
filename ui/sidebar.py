@@ -268,6 +268,49 @@ section[data-testid="stSidebar"] button[data-testid="baseButton-secondary"] {{
     border-radius: 10px !important;
     font-weight: 600 !important;
 }}
+
+/* ══════════════════════════════════════════════════
+   DOCUMENTATION SECTION — séparation + bouton discret
+══════════════════════════════════════════════════ */
+.sb-doc-section {{
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid {t['border']};
+}}
+.sb-doc-label {{
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: #475569 !important;
+    margin-bottom: 7px;
+    display: block;
+    font-family: 'DM Mono', monospace;
+    opacity: 0.68;
+}}
+section[data-testid="stSidebar"] .sb-doc-btn-wrap .stButton > button {{
+    background: {t['bg_card']} !important;
+    color: {t['text_secondary']} !important;
+    border: 1px solid {t['border']} !important;
+    border-radius: 10px !important;
+    font-size: .79rem !important;
+    font-weight: 500 !important;
+    padding: .46rem .9rem !important;
+    width: 100% !important;
+    letter-spacing: 0 !important;
+    box-shadow: none !important;
+    transition: background .18s ease, border-color .18s ease !important;
+    opacity: 1 !important;
+    transform: none !important;
+}}
+section[data-testid="stSidebar"] .sb-doc-btn-wrap .stButton > button:hover {{
+    background: {t['bg_card2']} !important;
+    border-color: {t['border_strong']} !important;
+    color: {t['text_primary']} !important;
+    box-shadow: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+}}
 </style>
 """
 
@@ -489,15 +532,23 @@ section[data-testid="stSidebar"] .launch-btn-wrap .stButton > button[disabled] {
             '</div></div>',
             unsafe_allow_html=True)
 
-        st.divider()
+        # ══════════════════════════════════════════════════════════════════════
+        # DOCUMENTATION — séparation visuelle claire + bouton ressource secondaire
+        # ══════════════════════════════════════════════════════════════════════
+        st.markdown(
+            '<div class="sb-doc-section">'
+            '<span class="sb-doc-label">Documentation</span>'
+            '</div>',
+            unsafe_allow_html=True)
 
-        # ── Bouton Guide ──────────────────────────────────────────────────────
+        st.markdown('<div class="sb-doc-btn-wrap">', unsafe_allow_html=True)
         if st.button(
-            "\U0001f4d6  Guide d\u2019int\u00e9gration des donn\u00e9es",
+            "\U0001f4d8  Guide d\u2019int\u00e9gration des donn\u00e9es",
             use_container_width=True,
             key="btn_guide"
         ):
             st.session_state["show_data_guide"] = True
+        st.markdown('</div>', unsafe_allow_html=True)
 
         st.divider()
 
