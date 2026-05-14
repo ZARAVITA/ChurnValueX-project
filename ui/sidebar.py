@@ -217,7 +217,7 @@ section[data-testid="stSidebar"] [data-testid="stFileUploader"] button {{ paddin
 .sb-ent-email {{ display:inline-block;font-size:.68rem;font-family:'DM Mono',monospace;color:{t['accent_blue']} !important;text-decoration:none;padding:.28rem .65rem;background:{t['accent_blue_bg']};border:1px solid {t['accent_blue_bd']};border-radius:7px;letter-spacing:.02em; }}
 
 /* ── Status ── */
-.status-active {{ margin-top:.7rem;padding:.6rem .9rem;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.28);border-radius:10px;font-size:.74rem;color:#16A34A;display:flex;align-items:center;gap:8px; }}
+.status-active {{ margin-top:.3rem;padding:.6rem .9rem;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.28);border-radius:10px;font-size:.74rem;color:#16A34A;display:flex;align-items:center;gap:8px; }}
 .status-dot {{ width:6px;height:6px;border-radius:50%;background:#22C55E;animation:pulse-green 2s ease-in-out infinite;flex-shrink:0; }}
 @keyframes pulse-green {{ 0%,100%{{opacity:1;transform:scale(1)}} 50%{{opacity:.55;transform:scale(.8)}} }}
 
@@ -273,8 +273,8 @@ section[data-testid="stSidebar"] button[data-testid="baseButton-secondary"] {{
    DOCUMENTATION SECTION — séparation + bouton discret
 ══════════════════════════════════════════════════ */
 .sb-doc-section {{
-    margin-top: 22px;
-    padding-top: 16px;
+    margin-top: 48px;
+    padding-top: 20px;
     border-top: 1px solid {t['border']};
 }}
 .sb-doc-label {{
@@ -470,7 +470,7 @@ section[data-testid="stSidebar"] .launch-btn-wrap .stButton > button[disabled] {
 </style>
 """, unsafe_allow_html=True)
 
-        st.markdown('<div class="launch-btn-wrap" style="margin-top:.65rem">', unsafe_allow_html=True)
+        st.markdown('<div class="launch-btn-wrap" style="margin-top:.25rem">', unsafe_allow_html=True)
         if st.button(
             btn_label,
             use_container_width=True,
@@ -484,7 +484,6 @@ section[data-testid="stSidebar"] .launch-btn-wrap .stButton > button[disabled] {
                     raw_df = pd.read_excel("data/E Commerce Dataset.xlsx", sheet_name=1)
                     st.session_state["raw_df"]       = raw_df
                     st.session_state["pipeline_key"] = None
-                    st.success(f"\u2713 {len(raw_df):,} clients charg\u00e9s")
                 except Exception:
                     from utils.synthetic import generate_synthetic_data
                     raw_df = generate_synthetic_data(900)
