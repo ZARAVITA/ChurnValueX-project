@@ -32,18 +32,59 @@ def render(df, t):
 
     k1, k2, k3, k4 = st.columns(4)
 
-    def kpi(col, label, value, delta=""):
+    # (gradient top bar, border color, value color)
+    KPI_STYLES = [
+        ("#EF4444, #DC2626",  "rgba(239,68,68,0.55)",   "#F87171"),   # rouge  — risque churn
+        ("#F97316, #EA580C",  "rgba(249,115,22,0.55)",  "#FB923C"),   # orange — revenu exposé
+        ("#3B82F6, #2563EB",  "rgba(59,130,246,0.45)",  "#60A5FA"),   # bleu   — concentration
+        ("#10B981, #059669",  "rgba(16,185,129,0.45)",  "#34D399"),   # vert   — CLV moyen
+    ]
+
+    def kpi(col, label, value, delta, grad, border, val_color):
         col.markdown(f"""
-<div class="kpi-card">
-    <div class="kpi-label">{label}</div>
-    <div class="kpi-value">{value}</div>
-    <div class="kpi-delta">{delta}</div>
+<div style="
+    background: {t['bg_card']};
+    border: 1px solid {border};
+    border-radius: 16px;
+    padding: 1.4rem 1.6rem;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+">
+    <div style="
+        position: absolute; top: 0; left: 0; right: 0; height: 3px;
+        background: linear-gradient(90deg, {grad});
+        border-radius: 16px 16px 0 0;
+    "></div>
+    <div style="
+        font-family: 'DM Mono', monospace;
+        font-size: 0.62rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: {t['text_muted']};
+        margin-bottom: 0.6rem;
+    ">{label}</div>
+    <div style="
+        font-size: 2rem;
+        font-weight: 800;
+        color: {val_color};
+        line-height: 1;
+        letter-spacing: -0.02em;
+    ">{value}</div>
+    <div style="
+        font-size: 0.76rem;
+        color: {t['text_secondary']};
+        margin-top: 0.55rem;
+        font-family: 'DM Mono', monospace;
+        opacity: 1;
+        font-weight: 500;
+    ">{delta}</div>
 </div>""", unsafe_allow_html=True)
 
-    kpi(k1, "Clients à haut risque",     f"{high_risk_pct:.1%}",  f"{high_risk_n:,} clients sur {total:,}")
-    kpi(k2, "Revenu exposé (CLV 12M)",   f"${revenue_risk:,.0f}", "pipeline à risque de départ")
-    kpi(k3, "Concentration top-20%",     f"{top20_rev_pct:.1%}",  "de la CLV totale dans le top quintile")
-    kpi(k4, "CLV moyen client (12M)",    f"${avg_clv:,.1f}",      "valeur projetée par client")
+    kpi(k1, "Clients à haut risque",   f"{high_risk_pct:.1%}",  f"{high_risk_n:,} clients sur {total:,}",  *KPI_STYLES[0])
+    kpi(k2, "Revenu exposé (CLV 12M)", f"${revenue_risk:,.0f}", "pipeline à risque de départ",              *KPI_STYLES[1])
+    kpi(k3, "Concentration top-20%",   f"{top20_rev_pct:.1%}",  "de la CLV totale dans le top quintile",    *KPI_STYLES[2])
+    kpi(k4, "CLV moyen client (12M)",  f"${avg_clv:,.1f}",      "valeur projetée par client",               *KPI_STYLES[3])
 
     st.markdown("<br>", unsafe_allow_html=True)
 
