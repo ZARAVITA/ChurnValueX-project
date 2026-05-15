@@ -201,13 +201,13 @@ section[data-testid="stSidebar"] [data-testid="stFileUploader"] button {{ paddin
 
 /* ── Parametres entreprises ── */
 .sb-ent-toggle {{ display:none; }}
-.sb-ent-btn {{ display:flex;align-items:center;justify-content:space-between;width:100%;padding:.6rem .9rem;background:{t['bg_card']} !important;border:1px solid {t['border']};border-radius:10px;cursor:pointer;transition:all .18s ease;font-family:'Plus Jakarta Sans',sans-serif;margin-top:.35rem; }}
-.sb-ent-btn:hover {{ background:{t['accent_blue_bg']} !important;border-color:{t['accent_blue_bd']}; }}
+.sb-ent-btn {{ display:flex;align-items:center;justify-content:space-between;width:100%;padding:.6rem .9rem;background:linear-gradient(135deg,rgba(30,64,175,0.10) 0%,rgba(15,23,42,0.55) 100%) !important;border:1px solid rgba(59,130,246,0.25);box-shadow:0 0 0 1px rgba(59,130,246,0.06),inset 0 1px 0 rgba(255,255,255,0.04);border-radius:10px;cursor:pointer;transition:all .22s ease;font-family:'Plus Jakarta Sans',sans-serif;margin-top:.35rem; }}
+.sb-ent-btn:hover {{ background:linear-gradient(135deg,rgba(59,130,246,0.15) 0%,rgba(30,64,175,0.12) 100%) !important;border-color:rgba(59,130,246,0.48);box-shadow:0 0 14px rgba(59,130,246,0.13),0 0 0 1px rgba(59,130,246,0.10),inset 0 1px 0 rgba(255,255,255,0.06); }}
 .sb-ent-label {{ font-size:.8rem;font-weight:700;color:{t['text_primary']} !important; }}
 .sb-ent-chevron {{ font-size:.6rem;color:{t['text_muted']} !important;transition:transform .2s ease; }}
 .sb-ent-body {{ display:none;border:1px solid {t['border']};border-top:none;border-radius:0 0 10px 10px;background:{t['bg_card2']};padding:.85rem 1rem .95rem;margin-top:-2px; }}
 .sb-ent-toggle:checked ~ .sb-ent-btn .sb-ent-chevron {{ transform:rotate(180deg); }}
-.sb-ent-toggle:checked ~ .sb-ent-btn {{ border-radius:10px 10px 0 0;border-bottom-color:transparent;background:{t['accent_blue_bg']} !important; }}
+.sb-ent-toggle:checked ~ .sb-ent-btn {{ border-radius:10px 10px 0 0;border-bottom-color:transparent;background:linear-gradient(135deg,rgba(59,130,246,0.18) 0%,rgba(30,64,175,0.14) 100%) !important;box-shadow:0 0 16px rgba(59,130,246,0.15),inset 0 1px 0 rgba(255,255,255,0.06); }}
 .sb-ent-toggle:checked ~ .sb-ent-body {{ display:block; }}
 .sb-ent-desc {{ font-size:.72rem;color:{t['text_secondary']} !important;line-height:1.6;margin-bottom:.5rem; }}
 .sb-ent-list {{ list-style:none;padding:0;margin:0 0 .6rem;display:flex;flex-direction:column;gap:.28rem; }}
